@@ -5,9 +5,11 @@
  * @format
  */
 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -24,12 +26,15 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { NavigationAction, NavigationContainer, useNavigation } from '@react-navigation/native';
+import LiveStream from './src/pages/LiveStream';
+import AppNavigator from './src/controllers/navigator/AppNavigator';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): JSX.Element {
+
+
+
+function Section({children, title}) {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -55,7 +60,7 @@ function Section({children, title}: SectionProps): JSX.Element {
   );
 }
 
-function App(): JSX.Element {
+export function Home({navigation}){
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -63,6 +68,7 @@ function App(): JSX.Element {
   };
 
   return (
+
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
@@ -71,29 +77,27 @@ function App(): JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
+        {/* <Header /> */}
+        <View style={{height: 100, backgroundColor:'#FFFFFF'}}></View>
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+            <Button  onPress={()=>navigation.navigate("LiveStream")}  title="Livestream"/>
+
+            
+          {/* <LearnMoreLinks /> */}
         </View>
+        
       </ScrollView>
-    </SafeAreaView>
-  );
+    </SafeAreaView>);
+
+}
+
+function App() {
+  return <NavigationContainer>
+    <AppNavigator/>
+  </NavigationContainer>
 }
 
 const styles = StyleSheet.create({
