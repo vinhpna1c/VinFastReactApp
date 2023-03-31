@@ -1,8 +1,13 @@
-import {Text} from 'react-native';
-export function HomeScreen(){
+import { ScrollView, Text, Image, SafeAreaView,View } from 'react-native';
+export function HomeScreen() {
     return (
-        <Text>
-            Home
-        </Text>
+       <View style={{marginTop:40}}>
+    <ScrollView>
+                <Image source={require('../../../assets/screens/home.png')} style={{width:'100%'}}/>
+            </ScrollView>
+    
+       </View>
+        
+
     )
 }
