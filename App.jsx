@@ -5,8 +5,6 @@
  * @format
  */
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import React from 'react';
 import {
   Button,
@@ -26,13 +24,13 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { NavigationAction, NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+  NavigationAction,
+  NavigationContainer,
+  useNavigation,
+} from '@react-navigation/native';
 import LiveStream from './src/pages/LiveStream';
 import AppNavigator from './src/controllers/navigator/AppNavigator';
-
-
-
-
 
 function Section({children, title}) {
   const isDarkMode = useColorScheme() === 'dark';
@@ -60,7 +58,7 @@ function Section({children, title}) {
   );
 }
 
-export function Home({navigation}){
+export function Home({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -68,7 +66,6 @@ export function Home({navigation}){
   };
 
   return (
-
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
@@ -78,26 +75,55 @@ export function Home({navigation}){
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         {/* <Header /> */}
-        <View style={{height: 100, backgroundColor:'#FFFFFF'}}></View>
+        <View style={{height: 100, backgroundColor: '#FFFFFF'}}></View>
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-            <Button  onPress={()=>navigation.navigate("LiveStream")}  title="Livestream"/>
+          <Button
+            onPress={() => navigation.navigate('LiveStream')}
+            title="Livestream"
+          />
 
-            
           {/* <LearnMoreLinks /> */}
         </View>
-        
-      </ScrollView>
-    </SafeAreaView>);
 
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Button
+            onPress={() => navigation.navigate('HomePage')}
+            title="HomePage"
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Button onPress={() => navigation.navigate('Login')} title="Login" />
+        </View>
+
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Button
+            onPress={() => navigation.navigate('Register')}
+            title="Register"
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 function App() {
-  return <NavigationContainer>
-    <AppNavigator/>
-  </NavigationContainer>
+  return (
+    <NavigationContainer>
+      <AppNavigator />
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
