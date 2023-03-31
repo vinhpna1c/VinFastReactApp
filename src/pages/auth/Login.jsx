@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState } from "react";
+import {useNavigation} from '@react-navigation/native';
 import {
   StyleSheet,
   Text,
@@ -15,9 +16,9 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // Perform login logic here
+    
   };
-
+  const navigation=useNavigation();
   return (
     <View style={styles.container}>
       <Image
@@ -42,7 +43,10 @@ export default function LoginScreen() {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={styles.button} onPress={()=>{
+        
+        navigation.navigate('signned');
+      }}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>

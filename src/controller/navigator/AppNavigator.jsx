@@ -7,17 +7,15 @@ import React from "react";
 // import { Home } from "../../../App";
 // import HomePage from "../../pages/HomePage";
 import Login from "../../pages/auth/Login";
+import { BottomBarNavigation } from "./BottomBarNavigation";
 // import Register from "../../pages/auth/Register";
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
   return (
-    <Stack.Navigator screenOptions={{}} initialRouteName="Home">
-      {/* <Stack.Screen name="Home" component={Home} /> */}
-      {/* <Stack.Screen name="LiveStream" component={LiveStream} /> */}
-      {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
-      <Stack.Screen name="Login" component={Login} />
-      {/* <Stack.Screen name="Register" component={Register} /> */}
+    <Stack.Navigator  screenOptions={{headerShown:false}} initialRouteName="login">
+      <Stack.Screen name="login" component={Login} />
+      <Stack.Screen name="signned" component={BottomBarNavigation} />
     </Stack.Navigator>
   );
 }
