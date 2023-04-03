@@ -6,6 +6,8 @@
  */
 
 import React from "react";
+import 'core-js/features/object/from-entries';
+import { Provider,observer } from 'mobx-react';
 import {
   Button,
   SafeAreaView,
@@ -31,8 +33,23 @@ import {
 } from "@react-navigation/native";
 
 import AppNavigator from "./src/controller/navigator/AppNavigator";
+import { API_REGIONS, createClient, enableCache } from '@amityco/ts-sdk';
+import AmityStore from "./src/store/AmityStore";
+
+
+export function initAmity() {
+
+  const apiKey = 'b0e8e90b6edfa56018638c490300428a820cdde1ba363c7e';
+
+  const client = createClient(apiKey, API_REGIONS.SG);
+
+
+  enableCache();
+  return client;
+}
 
 function Section({ children, title }) {
+
   const isDarkMode = useColorScheme() === "dark";
   return (
     <View style={styles.sectionContainer}>
@@ -126,10 +143,17 @@ function Section({ children, title }) {
 // }
 
 function App() {
-  return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+  
+  const amityStore=new AmityStore();
+  
+
+  
+  return (  
+    <Provider amityStore={{amityStore}}  >
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+      </Provider>
   );
 }
 
@@ -152,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default observer(App);
