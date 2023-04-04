@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import AmityStore from "../../store/AmityStore";
 
-function LoginScreen(props) {
+function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
