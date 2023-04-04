@@ -1,20 +1,23 @@
 /** @format */
 
 import { StyleSheet } from "react-native";
+
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 20,
+    marginLeft: 20,
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     borderRadius: 20,
     marginRight: 10,
   },
   headerText: {
     flexDirection: "column",
+    margin: 10,
   },
   username: {
     fontWeight: "bold",
@@ -30,14 +33,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   content: {
-    marginTop: 10,
-    marginBottom: 10,
+    margin: 20,
   },
   actions: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 10,
+
+    margin: 10,
   },
   action: {
     marginLeft: 10,
@@ -63,6 +65,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     padding: 10,
     marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 
