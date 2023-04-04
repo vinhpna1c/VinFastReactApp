@@ -6,7 +6,7 @@ import React from "react";
 // import LiveStream from '../../pages/LiveStream';
 // import { Home } from "../../../App";
 // import HomePage from "../../pages/HomePage";
-import Login from "../../pages/auth/Login";
+import Login from "../../pages/auth";
 import { BottomBarNavigation } from "./BottomBarNavigation";
 // import Register from "../../pages/auth/Register";
 const Stack = createNativeStackNavigator();
