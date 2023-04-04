@@ -1,8 +1,7 @@
 /** @format */
 
 import React, { useState, useContext } from "react";
-import { inject, observer } from 'mobx-react';
-
+import { inject, observer } from "mobx-react";
 
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -15,18 +14,14 @@ import {
 } from "react-native";
 import AmityStore from "../../store/AmityStore";
 
-
-
 function LoginScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const amityStore = new AmityStore();
   console.log(amityStore.client);
-  
 
   const navigation = useNavigation();
-
 
   return (
     <View style={styles.container}>
@@ -52,10 +47,13 @@ function LoginScreen(props) {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={async() => {
-        await amityStore.login("99");
-        navigation.navigate('signned');
-      }}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={async () => {
+          await amityStore.login("99");
+          navigation.navigate("signned");
+        }}
+      >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
