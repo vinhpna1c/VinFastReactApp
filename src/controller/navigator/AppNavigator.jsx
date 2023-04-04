@@ -7,6 +7,7 @@ import React from "react";
 // import { Home } from "../../../App";
 // import HomePage from "../../pages/HomePage";
 import Login from "../../pages/auth";
+import ReelScreen from '../../pages/community/reels';
 import { BottomBarNavigation } from "./BottomBarNavigation";
 // import Register from "../../pages/auth/Register";
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,8 @@ function AppNavigator() {
     >
       <Stack.Screen name="login" component={Login} />
       <Stack.Screen name="signned" component={BottomBarNavigation} />
+      <Stack.Screen name="reels" component={ReelScreen} />
+
     </Stack.Navigator>
   );
 }

@@ -10,12 +10,15 @@ import {
 import { useState, useEffect } from "react";
 import { runQuery, createQuery, queryGlobalFeed } from "@amityco/ts-sdk";
 import Post from "./feed/Post";
-import { Avatar, Divider } from "@rneui/themed";
+import { Avatar, Button, Divider } from "@rneui/themed";
 
 import styles from "./style";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useNavigation } from "@react-navigation/native";
+import ReelScreen from "./reels";
 export default function CommunityScreen() {
   const [posts, setPosts] = useState([]);
+  const navigation=useNavigation();
 
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
@@ -73,6 +76,9 @@ export default function CommunityScreen() {
         </View>
       </View>
       <Divider width={0.5} color="black" />
+      <Button title="Go to Reel" onPress={()=>{
+        navigation.navigate(ReelScreen());
+      }}></Button>
       <ScrollView>
         {posts.map((post) => (
           <Post key={post["_id"] ?? Date.now().toString} post={post} />

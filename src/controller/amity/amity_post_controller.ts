@@ -19,6 +19,11 @@ class AmityPostController {
 
   }
 
+  static getPostById =async(postID:string):Promise<Amity.Post<any>>=>
+  {
+     
+    return (await getPost(postID)).data;
+  }
 
   getPosts(): void {
 
