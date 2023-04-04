@@ -1,8 +1,9 @@
-import { SafeAreaView, ScrollView, Text } from 'react-native';
+import { FlatList, SafeAreaView, ScrollView, Text } from 'react-native';
 import { useState, useEffect } from 'react'
 import AmityPostController from '../../controller/amity/amity_post_controller';
 import AmityFeedStore from '../../store/feed/AmityFeedStore';
 import {runQuery,createQuery,queryGlobalFeed} from '@amityco/ts-sdk'
+import Post from './feed/Post';
 export default function CommunityScreen() {
     const [posts, setPosts] = useState([]);
 
@@ -11,8 +12,18 @@ export default function CommunityScreen() {
     const getGlobalFeed = () => {
         const query = createQuery(queryGlobalFeed);
         runQuery(query, ({ data: postList, ...options }) => {
-            setPosts(postList);
-            console.log(posts[0]);
+            if(typeof postList !=='undefined')
+            {
+                setPosts(postList);
+
+            }
+            else{
+                setPosts([]);
+            }
+            
+            // console.log(posts[0]);
+            console.log("Post result:")
+            // console.log(postList[0]);
         });
     }
 
@@ -23,9 +34,7 @@ export default function CommunityScreen() {
     return (
         <SafeAreaView>
             <ScrollView>
-                {posts.map(e => (<Text>
-                    {e['_id']}
-                </Text>))}
+                {posts.map(post=><Post key={post['_id']??Date.now().toString} post={post}/>)}
             </ScrollView>
         </SafeAreaView>
     );
