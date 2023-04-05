@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,15 +8,22 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  FlatList,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Avatar, Divider } from "@rneui/themed";
 import styles from "./style";
+import { getTimeDiffString } from '../../../utils/utils';
+import AmityPostController from "../../../controller/amity/amity_post_controller";
+import { getFile } from "@amityco/ts-sdk";
 
 const Post = ({ post }) => {
+
   const [liked, setLiked] = useState(false);
   const [commented, setCommented] = useState(false);
   const [shared, setShared] = useState(false);
+
+  const [images, setImages] = useState([]);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -30,35 +37,77 @@ const Post = ({ post }) => {
     setShared(!shared);
   };
 
-  return (
-    <View>
-      <View style={styles.header}>
-        <Avatar
-          size={48}
-          rounded
-          source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-        />
-        <View style={styles.headerText}>
-          <Text style={styles.username}>{post.postedUserId}</Text>
-          <Text style={styles.timestamp}>{post.updatedAt}</Text>
-        </View>
+  useEffect(() => {
+    const subPosts = post['children'] ?? [];
+    const getImageLinks = async () => {
+      var links = [];
 
+      for (let i = 0; i < subPosts.length; i++) {
+        const p = await AmityPostController.getPostById(subPosts[i]);
+        //handle types of post here
+        
+        if (p.dataType === 'image') {
+          const url = (await getFile(p.data.fileId)).data.fileUrl;
+          //add large for render
+          links.push(url + "?size=large")
+        }
+        else if(p.dataType==='video')
+    {
+
+const videoFile =await getFile( p.data.videoFileId.original);
+console.log(videoFile.data.fileUrl);
+    }
+
+
+      }
+      return links;
+
+    }
+
+    getImageLinks().then(value => setImages(value));
+
+
+  }, []);
+
+
+  const timeDiff = getTimeDiffString(post['createdAt'] ?? "");
+
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+          <Avatar
+            size={48}
+            rounded
+            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+          />
+          <View style={styles.headerText}>
+            <Text style={styles.username}>{post.postedUserId}</Text>
+            <Text style={styles.timestamp}>{timeDiff}</Text>
+          </View>
+        </View>
         <View>
           <TouchableOpacity style={{ marginLeft: 110 }}>
-            <MaterialIcons name="more" size={20}></MaterialIcons>
+            <MaterialIcons name="more-horiz" size={20}></MaterialIcons>
           </TouchableOpacity>
         </View>
       </View>
+      <Text style={styles.content}>{post.data.text}</Text>
+      {images.map(image => {
+        console.log(image);
+        return (<Image source={{ uri: image }} key={image} style={{ height: 100, width: 100 }} />)
+      })}
       {/* {post.image && (
           <Image source={{ uri: post.image }} style={styles.image} />
         )} */}
-      <Text style={styles.content}>{post.data.text}</Text>
+
 
       <View style={styles.actions}>
         {/* React  */}
         <TouchableOpacity onPress={handleLike}>
           <MaterialIcons
-            name={liked ? "favorite" : "favorite"}
+            name={liked ? "favorite-outline" : "favorite-outline"}
             size={24}
             style={styles.actionIcon}
           />
@@ -68,7 +117,7 @@ const Post = ({ post }) => {
         {/* Comment */}
         <TouchableOpacity onPress={handleComment} style={styles.action}>
           <MaterialIcons
-            name={commented ? "comment" : "comment"}
+            name={commented ? "textsms" : "textsms"}
             size={24}
             style={styles.actionIcon}
           />
@@ -85,7 +134,7 @@ const Post = ({ post }) => {
         </TouchableOpacity>
         <Text style={styles.actionCount}>{post.sharedCount}</Text>
       </View>
-      <Divider width={1} color="black"></Divider>
+      {/* <Divider width={1} color="black"></Divider> */}
 
       {commented && (
         <View style={styles.commentSection}>

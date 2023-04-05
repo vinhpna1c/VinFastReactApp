@@ -1,5 +1,10 @@
-import { createQuery, runQuery, queryPosts, getPost, queryGlobalFeed } from '@amityco/ts-sdk';
+import { createQuery, runQuery, queryPosts, getPost, queryGlobalFeed, getFile } from '@amityco/ts-sdk';
 import AmityFeedStore from '../../store/feed/AmityFeedStore';
+
+enum FileTypes {
+  VIDEO,
+  IMAGE
+}
 
 class AmityPostController {
   constructor() { }
@@ -28,6 +33,8 @@ class AmityPostController {
   getPosts(): void {
 
   }
+
+
 }
 
 export default AmityPostController

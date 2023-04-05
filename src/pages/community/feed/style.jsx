@@ -3,21 +3,42 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+container:{
+  marginTop:16,
+  padding:8,
+  backgroundColor:'white'
+},
+container: {
+  flex: 1,
+  justifyContent: 'center',
+  backgroundColor: 'white',
+},
+imageThumbnail: {
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 100,
+  width:100,
+flex:1,
+  
+},
   header: {
     flexDirection: "row",
-    alignItems: "center",
-    marginTop: 20,
-    marginLeft: 20,
+    // alignItems: "space-between",
+    justifyContent:'space-between',
+    // backgroundColor:'red',
+        
   },
   avatar: {
     width: 60,
     height: 60,
     borderRadius: 20,
-    marginRight: 10,
+    
   },
   headerText: {
     flexDirection: "column",
-    margin: 10,
+    justifyContent:'center',
+    
+    margin: 16,
   },
   username: {
     fontWeight: "bold",
@@ -33,13 +54,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   content: {
-    margin: 20,
+    // backgroundColor:'red',
+    fontSize:16,
+    fontFamily:'sans-serif',
+    marginBottom:4,
+    // margin: 20,
   },
   actions: {
     flexDirection: "row",
     alignItems: "center",
 
     margin: 10,
+  },
+  actionContainer:{
+    marginRight:32,
   },
   action: {
     marginLeft: 10,
@@ -49,6 +77,7 @@ const styles = StyleSheet.create({
   },
   actionCount: {
     marginLeft: 5,
+    marginRight:32,
     color: "#333",
   },
 

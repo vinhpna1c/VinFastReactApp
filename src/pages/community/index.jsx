@@ -77,9 +77,10 @@ export default function CommunityScreen() {
       </View>
       <Divider width={0.5} color="black" />
       <Button title="Go to Reel" onPress={()=>{
-        navigation.navigate(ReelScreen());
+        navigation.goBack();
+        
       }}></Button>
-      <ScrollView>
+      <ScrollView style={{height:'80%'}}>
         {posts.map((post) => (
           <Post key={post["_id"] ?? Date.now().toString} post={post} />
         ))}

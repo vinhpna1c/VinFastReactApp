@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Button,
 } from "react-native";
 import AmityStore from "../../store/AmityStore";
 
@@ -56,6 +57,8 @@ function LoginScreen() {
       >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
+
+      <Button title="Go to reeel" onPress={()=>{navigation.navigate('reels')}}/>
     </View>
   );
 }

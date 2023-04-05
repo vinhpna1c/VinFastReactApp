@@ -11,7 +11,7 @@ import { HomeScreen } from "../../pages/home";
 import ProductScreen from "../../pages/product";
 import PersonalScreen from "../../pages/personal";
 import CommunityScreen from "../../pages/community";
-import { Icon } from "react-native-elements";
+
 
 export function BottomBarNavigation() {
   const Tab = createBottomTabNavigator();
