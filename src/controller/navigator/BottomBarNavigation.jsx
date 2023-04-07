@@ -61,5 +61,6 @@ export function BottomBarNavigation() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+
   );
 }

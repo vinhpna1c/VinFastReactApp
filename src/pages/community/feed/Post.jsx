@@ -45,20 +45,17 @@ const Post = ({ post }) => {
       for (let i = 0; i < subPosts.length; i++) {
         const p = await AmityPostController.getPostById(subPosts[i]);
         //handle types of post here
-        
+
         if (p.dataType === 'image') {
           const url = (await getFile(p.data.fileId)).data.fileUrl;
           //add large for render
           links.push(url + "?size=large")
         }
-        else if(p.dataType==='video')
-    {
-
-const videoFile =await getFile( p.data.videoFileId.original);
-console.log(videoFile.data.fileUrl);
-    }
-
-
+        else if (p.dataType === 'video') {
+          console.log(p);
+          const videoFile = await getFile(p.data.videoFileId.original);
+          console.log(videoFile.data.fileUrl);
+        }
       }
       return links;
 

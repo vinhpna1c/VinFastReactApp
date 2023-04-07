@@ -16,9 +16,10 @@ import styles from "./style";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import ReelScreen from "./reels";
+import MiniReel from "./reels/MiniReel";
 export default function CommunityScreen() {
   const [posts, setPosts] = useState([]);
-  const navigation=useNavigation();
+  const navigation = useNavigation();
 
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
@@ -65,7 +66,12 @@ export default function CommunityScreen() {
             />
           </View>
         </View>
-
+        <ScrollView horizontal={true}>
+          {posts.filter((post) => post["dataType"] === 'text' && post['data']['text'] === '##REEL##').map(p => {
+            
+            return (<MiniReel post={p}/>);
+          })}
+        </ScrollView>
         <View style={styles.header_bar}>
           <TouchableOpacity style={styles.header_bar_button}>
             <Text style={styles.header_bar_text}>Bảng Tin</Text>
@@ -76,12 +82,20 @@ export default function CommunityScreen() {
         </View>
       </View>
       <Divider width={0.5} color="black" />
-      <Button title="Go to Reel" onPress={()=>{
+      <Button title="Go to Reel" onPress={() => {
         navigation.goBack();
-        
+
       }}></Button>
-      <ScrollView style={{height:'80%'}}>
-        {posts.map((post) => (
+      <ScrollView style={{ height: '80%' }}>
+        {posts.filter(p=>{
+          if(p["dataType"] === 'text')
+
+          {
+            if(p['data']['text'] === '##REEL##'){
+              return false;
+            }
+          }
+          return true;}).map((post) => (
           <Post key={post["_id"] ?? Date.now().toString} post={post} />
         ))}
       </ScrollView>
