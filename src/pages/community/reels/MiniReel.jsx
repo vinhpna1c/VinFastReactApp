@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet,Text,Image } from "react-native";
+import { View, StyleSheet,Text,Image, TouchableOpacity } from "react-native";
 import Video from 'react-native-video';
 import AmityPostController from "../../../controller/amity/amity_post_controller";
+import { useNavigation } from "@react-navigation/native";
 
 function MiniReel({ post }) {
+    const navigation=useNavigation();
     
     const [reelData,setReelData]=useState(["",""]);
     
@@ -19,6 +21,7 @@ function MiniReel({ post }) {
     
 
     return (
+       <TouchableOpacity onPress={()=>navigation.navigate('community',{'screen':'reel'})}>
         <View style={styles.container}>
             <View style={styles.topContainer}>
               {
@@ -41,6 +44,7 @@ function MiniReel({ post }) {
                 <Text style={styles.textStyle} numberOfLines={1} ellipsizeMode="tail">{post['postedUserId']??""}</Text>
             </View>
         </View>
+        </TouchableOpacity> 
     )
 }
 
