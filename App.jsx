@@ -5,9 +5,9 @@
  * @format
  */
 
-import React from "react";
+import React, { createContext } from "react";
 import 'core-js/features/object/from-entries';
-import { Provider,observer } from 'mobx-react';
+import { Provider,inject,observer } from 'mobx-react';
 import {
   Button,
   SafeAreaView,
@@ -34,7 +34,9 @@ import {
 
 import AppNavigator from "./src/controller/navigator/AppNavigator";
 import { API_REGIONS, createClient, enableCache } from '@amityco/ts-sdk';
-import AmityStore from "./src/store/AmityStore";
+import AmityStore from "./src/stores/amity/AmityStore";
+import RootStore from "./src/stores";
+import { observe } from "mobx";
 
 
 export function initAmity() {
@@ -77,83 +79,20 @@ function Section({ children, title }) {
   );
 }
 
-// export function Home({ navigation }) {
-//   const isDarkMode = useColorScheme() === "dark";
-
-//   const backgroundStyle = {
-//     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-//   };
-
-//   return (
-//     <SafeAreaView style={backgroundStyle}>
-//       <StatusBar
-//         barStyle={isDarkMode ? "light-content" : "dark-content"}
-//         backgroundColor={backgroundStyle.backgroundColor}
-//       />
-//       <ScrollView
-//         contentInsetAdjustmentBehavior="automatic"
-//         style={backgroundStyle}
-//       >
-//         {/* <Header /> */}
-//         <View style={{ height: 100, backgroundColor: "#FFFFFF" }}></View>
-//         <View
-//           style={{
-//             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-//           }}
-//         >
-//           <Button
-//             onPress={() => navigation.navigate("LiveStream")}
-//             title="Livestream"
-//           />
-
-//           {/* <LearnMoreLinks /> */}
-//         </View>
-
-//         <View
-//           style={{
-//             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-//           }}
-//         >
-//           <Button
-//             onPress={() => navigation.navigate("HomePage")}
-//             title="HomePage"
-//           />
-//         </View>
-//         <View
-//           style={{
-//             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-//           }}
-//         >
-//           <Button onPress={() => navigation.navigate("Login")} title="Login" />
-//         </View>
-
-//         <View
-//           style={{
-//             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-//           }}
-//         >
-//           <Button
-//             onPress={() => navigation.navigate("Register")}
-//             title="Register"
-//           />
-//         </View>
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// }
-
 function App() {
   
-  const amityStore=new AmityStore();
+  const rootStore=new RootStore();
   
-
   
+    
   return (  
-    <Provider amityStore={{amityStore}}  >
+<Provider {...rootStore}>
+
+
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
-      </Provider>
+      </Provider>   
   );
 }
 

@@ -7,16 +7,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 // import  Icon  from 'react-native';
 
-import { HomeScreen } from "../../pages/home";
-import ProductScreen from "../../pages/product";
-import PersonalScreen from "../../pages/personal";
-import CommunityScreen from "../../pages/community";
+import  HomeScreen  from "../../../pages/home";
+import ProductScreen from "../../../pages/product";
+import PersonalScreen from "../../../pages/personal";
+import CommunityScreen from "../../../pages/community";
+import CommunityNavigation from "./CommunityNavigation";
 
 
 export function BottomBarNavigation() {
   const Tab = createBottomTabNavigator();
   return (
-    <NavigationContainer independent={true}>
+    
       <Tab.Navigator
         screenOptions={{ headerShown: false }}
         initialRouteName="home"
@@ -41,7 +42,7 @@ export function BottomBarNavigation() {
         />
         <Tab.Screen
           name="community"
-          component={CommunityScreen}
+          component={CommunityNavigation}
           options={{
             tabBarLabel: "Community",
             tabBarIcon: ({ color }) => (
@@ -60,7 +61,7 @@ export function BottomBarNavigation() {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
+    
 
   );
 }

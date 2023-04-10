@@ -1,18 +1,25 @@
 import { makeObservable, observable, action } from 'mobx';
 import { connectClient, getFile, } from "@amityco/ts-sdk";
-import { initAmity } from '../../App';
-import AmityPostController from '../controller/amity/amity_post_controller';
+import { initAmity } from '../../../App';
+import AmityPostController from '../../controller/amity/amity_post_controller';
 class AmityStore {
     client = initAmity();
     authToken = "";
+    testData="";
 
     constructor() {
         makeObservable(this, {
             client: observable,
             authToken:observable,
+            testData:observable,
+            setTestData:action,
             
         })
 
+    }
+
+    setTestData(newData:string){
+        this.testData=newData;
     }
 
     login(username: string): void {

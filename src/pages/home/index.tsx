@@ -11,14 +11,23 @@ import {
   FlatList,
 } from "react-native";
 import { Avatar } from "@rneui/themed";
-import { Icon } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import styles from "./styles";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AmityStore from "../../stores/amity/AmityStore";
+import { observable, observe } from "mobx";
+import { MobXProviderContext, observer, useLocalStore } from "mobx-react";
+import RootStore from "../../stores";
+import { useContext } from "react";
 
-export function HomeScreen() {
+ function HomeScreen() {
+ const {amityStore}=useContext(MobXProviderContext);
+ console.log(amityStore);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* herder side */}
+      <Text>Test data: {amityStore.testData} //</Text>
       <View style={styles.headerside}>
         <View style={styles.header}>
           <Avatar
@@ -475,7 +484,15 @@ export function HomeScreen() {
             </TouchableOpacity>
           </View>
         </View>
+        <Button title={"Change data"}onPress={()=>{
+          console.log("Old data: "+amityStore.testData);
+          const newData="Hello"+(Math.random()*100).toString()
+          console.log(newData)
+          amityStore.setTestData("Hello"+(Math.random()*100).toString())
+          }}/>
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+export default observer(HomeScreen)

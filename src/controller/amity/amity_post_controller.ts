@@ -1,7 +1,7 @@
 import { createQuery, runQuery, queryPosts, getPost, queryGlobalFeed, getFile } from '@amityco/ts-sdk';
-import AmityFeedStore from '../../store/feed/AmityFeedStore';
+import AmityFeedStore from '../../stores/feed/AmityFeedStore';
 
-export type PostHandleData=[string,string];
+export type PostHandleData = [string, string];
 
 enum FileTypes {
   VIDEO,
@@ -19,16 +19,15 @@ class AmityPostController {
 
     runQuery(query, ({ data: posts, ...options }) => console.log(posts, options));
   }
-  
+
   queryGlobalFeed(postList: Amity.Post[]) {
-  
+
 
 
   }
 
-  static getPostById =async(postID:string):Promise<Amity.Post<any>>=>
-  {
-     
+  static getPostById = async (postID: string): Promise<Amity.Post<any>> => {
+
     return (await getPost(postID)).data;
   }
 
@@ -36,23 +35,23 @@ class AmityPostController {
 
   }
 
-static  getUrlFromPost=async(postID:string):Promise<PostHandleData>=>{
-    let url="";
-    let dataType="";
+  static getUrlFromPost = async (postID: string): Promise<PostHandleData> => {
+    let url = "";
+    let dataType = "";
     const p = await AmityPostController.getPostById(postID);
     //handle types of post here
 
     if (p.dataType === 'image') {
-       url = (await getFile((p.data as Amity.ContentDataImage).fileId)).data.fileUrl;
-        
+      url = (await getFile((p.data as Amity.ContentDataImage).fileId)).data.fileUrl;
+
     }
     else if (p.dataType === 'video') {
 
-      const videoFile = await getFile((p.data as Amity.ContentDataVideo).videoFileId.original??"");
-      url= videoFile.data.fileUrl;
+      const videoFile = await getFile((p.data as Amity.ContentDataVideo).videoFileId.original ?? "");
+      url = videoFile.data.fileUrl;
     }
-    dataType=p.dataType;
-    return [url,dataType];
+    dataType = p.dataType;
+    return [url, dataType];
   }
 
 

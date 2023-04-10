@@ -8,7 +8,7 @@ import React from "react";
 // import HomePage from "../../pages/HomePage";
 import Login from "../../pages/auth";
 import ReelScreen from '../../pages/community/reels';
-import { BottomBarNavigation } from "./BottomBarNavigation";
+import { BottomBarNavigation } from "./tabs";
 // import Register from "../../pages/auth/Register";
 const Stack = createNativeStackNavigator();
 

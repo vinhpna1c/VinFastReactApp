@@ -17,10 +17,17 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import ReelScreen from "./reels";
 import MiniReel from "./reels/MiniReel";
+import AmityStore from "../../stores/amity/AmityStore";
+import { useLocalStore } from "mobx-react";
+import RootStore from "../../stores";
 export default function CommunityScreen() {
   const [posts, setPosts] = useState([]);
   const navigation = useNavigation();
+  const {amityStore}=useLocalStore(()=>new RootStore());
+  console.log("Amity store in comuunity");
+  console.log(amityStore.testData);
 
+    
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
     runQuery(query, ({ data: postList, ...options }) => {
