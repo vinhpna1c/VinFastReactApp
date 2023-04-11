@@ -20,26 +20,29 @@ import { MobXProviderContext, observer, useLocalStore } from "mobx-react";
 import RootStore from "../../stores";
 import { useContext } from "react";
 
- function HomeScreen() {
- const {amityStore}=useContext(MobXProviderContext)as RootStore;
-//  console.log(amityStore);
-console.log(amityStore.testData);
+function HomeScreen() {
+  const { amityStore } = useContext(MobXProviderContext) as RootStore;
+  //  console.log(amityStore);
+  console.log(amityStore.testData);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, }}>
       {/* herder side */}
-      <Text>Test data: {amityStore.testData} //</Text>
-      <View style={styles.headerside}>
+
+      <View style={styles.container}>
         <View style={styles.header}>
-          <Avatar
-            size={40}
-            rounded
-            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-          />
-          <View>
-            <Text style={{ color: "white" }}> Nguyen Ho Duy Tri</Text>
-            <Text style={{ color: "white" }}>@tringuyen</Text>
+          <View style={{flexDirection:'row'}}>
+            <Avatar
+              size={40}
+              rounded
+              source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            />
+            <View>
+              <Text style={{ color: "white" }}> Nguyen Ho Duy Tri</Text>
+              <Text style={{ color: "white" }}>@tringuyen</Text>
+            </View>
           </View>
+
           <View style={styles.headericon}>
             <MaterialIcons
               name="favorite-outline"
@@ -53,6 +56,7 @@ console.log(amityStore.testData);
             />
           </View>
         </View>
+
       </View>
       <ScrollView>
         {/* Search Bar */}
@@ -72,7 +76,7 @@ console.log(amityStore.testData);
               <TextInput
                 style={styles.searchInput}
                 value=""
-                onChange={() => {}}
+                onChange={() => { }}
                 placeholder="Tìm Kiếm"
               />
             </View>
@@ -485,12 +489,7 @@ console.log(amityStore.testData);
             </TouchableOpacity>
           </View>
         </View>
-        <Button title={"Change data"}onPress={()=>{
-          console.log("Old data: "+amityStore.testData);
-          const newData="Hello"+(Math.random()*100).toString()
-          console.log(newData)
-          amityStore.setTestData("Hello"+(Math.random()*100).toString())
-          }}/>
+
       </ScrollView>
     </SafeAreaView>
   );

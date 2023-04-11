@@ -32,8 +32,10 @@ import { observe } from "mobx";
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
     runQuery(query, ({ data: postList, ...options }) => {
+      console.log("Query global");
       if (typeof postList !== "undefined") {
         // setPosts(postList);
+        
         amityFeedStore.posts=[...postList];
       } else {
         amityFeedStore.posts=[];

@@ -62,18 +62,21 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.medium,
     height: "100%",
   },
-  headerside: {
+  container: {
     backgroundColor: "black",
-    marginTop: 40,
-    height: 60,
+    
+    // height: 60,
   },
   header: {
     padding: 10,
     display: "flex",
+    
     flexDirection: "row",
+    
+    justifyContent:"space-between",
   },
   headericon: {
-    paddingLeft: 140,
+    // paddingLeft: 140,
     display: "flex",
     flexDirection: "row",
   },
