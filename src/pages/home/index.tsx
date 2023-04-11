@@ -21,8 +21,9 @@ import RootStore from "../../stores";
 import { useContext } from "react";
 
  function HomeScreen() {
- const {amityStore}=useContext(MobXProviderContext);
- console.log(amityStore);
+ const {amityStore}=useContext(MobXProviderContext)as RootStore;
+//  console.log(amityStore);
+console.log(amityStore.testData);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

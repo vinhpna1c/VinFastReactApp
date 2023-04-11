@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { runQuery, createQuery, queryGlobalFeed } from "@amityco/ts-sdk";
 import Post from "./feed/Post";
 import { Avatar, Button, Divider } from "@rneui/themed";
@@ -18,27 +18,29 @@ import { useNavigation } from "@react-navigation/native";
 import ReelScreen from "./reels";
 import MiniReel from "./reels/MiniReel";
 import AmityStore from "../../stores/amity/AmityStore";
-import { useLocalStore } from "mobx-react";
+import { MobXProviderContext, observer, useLocalObservable, useLocalStore } from "mobx-react";
 import RootStore from "../../stores";
-export default function CommunityScreen() {
+import { observe } from "mobx";
+ function CommunityScreen() {
   const [posts, setPosts] = useState([]);
   const navigation = useNavigation();
-  const {amityStore}=useLocalStore(()=>new RootStore());
+  const {amityStore,amityFeedStore}=useContext(MobXProviderContext)as RootStore ;
   console.log("Amity store in comuunity");
-  console.log(amityStore.testData);
+  console.log(amityStore);
 
     
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
     runQuery(query, ({ data: postList, ...options }) => {
       if (typeof postList !== "undefined") {
-        setPosts(postList);
+        // setPosts(postList);
+        amityFeedStore.posts=[...postList];
       } else {
-        setPosts([]);
+        amityFeedStore.posts=[];
       }
 
       // console.log(posts[0]);
-      console.log("Post result:");
+      // console.log("Post result:");
       // console.log(postList[0]);
     });
   };
@@ -73,12 +75,6 @@ export default function CommunityScreen() {
             />
           </View>
         </View>
-        <ScrollView horizontal={true}>
-          {posts.filter((post) => post["dataType"] === 'text' && post['data']['text'] === '##REEL##').map(p => {
-            
-            return (<MiniReel post={p}/>);
-          })}
-        </ScrollView>
         <View style={styles.header_bar}>
           <TouchableOpacity style={styles.header_bar_button}>
             <Text style={styles.header_bar_text}>Bảng Tin</Text>
@@ -87,25 +83,30 @@ export default function CommunityScreen() {
             <Text style={styles.header_bar_text}>Khám Phá</Text>
           </TouchableOpacity>
         </View>
+       
+        
       </View>
-      <Divider width={0.5} color="black" />
-      <Button title="Go to Reel" onPress={() => {
-        navigation.goBack();
-
-      }}></Button>
-      <ScrollView style={{ height: '80%' }}>
-        {posts.filter(p=>{
+      <Divider width={1} color="#EBECEF" />
+     
+      <ScrollView style={{ height: '80%' ,backgroundColor:'#EBECEF'}}>
+      <ScrollView horizontal={true}  style={styles.reelContainer}>
+          {amityFeedStore.posts.filter((post) => post["dataType"] === 'text' && post['data']['text'] === '##REEL##').map((p,index) => {
+            
+          return (<MiniReel key={index.toString()}  post={p} />);
+          })}
+        </ScrollView>
+        {amityFeedStore.posts.filter((p,index)=>{
           if(p["dataType"] === 'text')
-
-          {
+          {            
             if(p['data']['text'] === '##REEL##'){
               return false;
             }
           }
           return true;}).map((post) => (
-          <Post key={post["_id"] ?? Date.now().toString} post={post} />
+          <Post  key={post["_id"] ?? Date.now().toString} post={post} />
         ))}
       </ScrollView>
     </SafeAreaView>
   );
 }
+export default observer(CommunityScreen);

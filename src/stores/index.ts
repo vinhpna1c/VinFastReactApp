@@ -4,16 +4,14 @@ import AmityFeedStore from "./feed/AmityFeedStore";
 
 
 class RootStore {
-  
-  amityFeedStore:AmityFeedStore;
-    amityStore:AmityStore;
-  constructor()
-  {
-    this.amityFeedStore=new AmityFeedStore();
-    this.amityStore=new AmityStore();
-    makeObservable(this,{
-        amityFeedStore:observable,
-        amityStore:observable
+  amityFeedStore: AmityFeedStore;
+  amityStore: AmityStore;
+  constructor() {
+    this.amityFeedStore = new AmityFeedStore();
+    this.amityStore = new AmityStore();
+    makeObservable(this, {
+      amityFeedStore: observable,
+      amityStore: observable
     })
   }
 

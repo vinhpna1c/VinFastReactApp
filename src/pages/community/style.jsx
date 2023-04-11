@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 24,
   },
+  reelContainer: {
+    backgroundColor: 'white',
+    padding: 16,
+    marginBottom:4,
+  },
+
+
   header_bar: {
     padding: 5,
     flexDirection: "row",

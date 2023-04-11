@@ -5,10 +5,8 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Image,
   TextInput,
-  FlatList,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Avatar, Divider } from "@rneui/themed";
@@ -77,6 +75,7 @@ const Post = ({ post }) => {
           <Avatar
             size={48}
             rounded
+            style={styles.avatar}
             source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
           />
           <View style={styles.headerText}>
@@ -91,10 +90,13 @@ const Post = ({ post }) => {
         </View>
       </View>
       <Text style={styles.content}>{post.data.text}</Text>
-      {images.map(image => {
-        console.log(image);
-        return (<Image source={{ uri: image }} key={image} style={{ height: 100, width: 100 }} />)
-      })}
+      <View style={styles.mediaContainer}>
+        {images.map((image,index) => {
+          console.log(image);
+          return (<Image source={{ uri: image }} key={image} style={index==0?styles.topImageContent:styles.otherImageContent} />)
+        })}
+      </View>
+
       {/* {post.image && (
           <Image source={{ uri: post.image }} style={styles.image} />
         )} */}

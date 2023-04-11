@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useContext } from "react";
-import { inject, observer, useLocalStore } from "mobx-react";
+import { inject, observer, useLocalStore,MobXProviderContext } from "mobx-react";
 
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -20,8 +20,8 @@ function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const amityStore=useLocalStore(()=>new AmityStore())
-  console.log(amityStore.client);
+  const {amityStore}=useContext(MobXProviderContext);
+  
 
   const navigation = useNavigation();
 

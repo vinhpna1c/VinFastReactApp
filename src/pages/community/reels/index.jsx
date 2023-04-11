@@ -6,6 +6,7 @@ import Video from 'react-native-video';
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from 'react-native-elements';
 import ReelProgress from "./ReelProgress";
+import { Image } from "react-native-elements";
 import { getTimeDiffString } from '../../../utils/utils';
 // import * as Contants from '../../../utils/constants';
 const ReelScreen = () => {
@@ -17,6 +18,7 @@ const ReelScreen = () => {
             "createdAt": "2023-04-04T06:31:40.654Z",
             "displayName": "99",
             "avatarUrl": "https://pbs.twimg.com/profile_images/1102856169088053249/7iZzU6J0_400x400.png",
+            "dataType": "video",
         },
         {
             "_id": "2",
@@ -24,6 +26,15 @@ const ReelScreen = () => {
             "createdAt": "2023-04-04T06:31:40.654Z",
             "displayName": "99",
             "avatarUrl": "https://pbs.twimg.com/profile_images/1102856169088053249/7iZzU6J0_400x400.png",
+            "dataType": "video",
+        },
+        {
+            "_id": "2",
+            "uri": "https://shop.vinfastauto.com/on/demandware.static/-/Sites-app_vinfast_vn-Library/default/dwc1a7c1f3/images/Lux-A/hinh-anh-gia-xe-VinFast-Lux-A2.0-ban-tieu-chuan-mau-do-mystique-red.png",
+            "createdAt": "2023-04-04T06:31:40.654Z",
+            "displayName": "99",
+            "avatarUrl": "https://pbs.twimg.com/profile_images/1102856169088053249/7iZzU6J0_400x400.png",
+            "dataType": "image",
         },
     ];
     const videoRef = useRef(null);
@@ -34,7 +45,7 @@ const ReelScreen = () => {
     return (
         <View style={styles.outsideContainer}>
             <View style={styles.insideContainer}>
-                <Video
+                {DATA[videoIndex].dataType === 'video' && <Video
                     key={DATA[videoIndex]._id}
                     ref={videoRef}
                     source={{ uri: DATA[videoIndex].uri }}
@@ -50,7 +61,13 @@ const ReelScreen = () => {
                             setVideoIndex(videoIndex < DATA.length - 1 ? (videoIndex + 1) : DATA.length - 1);
                         }
                     }}
-                />
+                />}
+                {
+                    DATA[videoIndex].dataType === 'image' && <Image source={{
+                        uri: DATA[videoIndex].uri
+                    }} 
+                    style={{height:200, width:300}}/>
+                }
                 <TouchableOpacity style={styles.leftOverlay} onPress={() => {
                     console.log("left tab");
                     setVideoIndex(videoIndex > 0 ? (videoIndex - 1) : 0);
@@ -61,7 +78,7 @@ const ReelScreen = () => {
                 }} />
             </View>
             <View style={styles.header}>
-                <View style={{ flexDirection: 'row', padding: 4 ,backgroundColor:'green'}}>
+                <View style={{ flexDirection: 'row', padding: 4, }}>
                     <Avatar
 
                         size={48}
@@ -70,10 +87,10 @@ const ReelScreen = () => {
                         containerStyle={{ marginRight: 4 }}
                     // style={styles.avatar}
                     />
-                    <View style={{backgroundColor:'red',justifyContent:'space-between'}}>
+                    <View style={{  }}>
 
-                        <Text style={{ color: 'white',fontWeight:'bold' }}>{DATA[videoIndex].displayName}</Text>
-                        <Text style={{ color: 'white',fontWeight:'300' }}>{getTimeDiffString(DATA[videoIndex].createdAt)}</Text>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>{DATA[videoIndex].displayName}</Text>
+                        <Text style={{ color: 'white', fontWeight: '300' }}>{getTimeDiffString(DATA[videoIndex].createdAt)}</Text>
 
                     </View>
                 </View >
@@ -82,8 +99,8 @@ const ReelScreen = () => {
                         <MaterialIcons name="close" size={26} color='white'></MaterialIcons>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
-                    <MaterialIcons name="more-horiz" size={26} color="white" />
-                      
+                        <MaterialIcons name="more-horiz" size={26} color="white" />
+
                     </TouchableOpacity>
                 </View>
 
@@ -102,7 +119,7 @@ const styles = StyleSheet.create({
         left: 0,
         width: '100%',
         height: 100,
-        backgroundColor:"yellow",
+        
         flexDirection: "row",
         justifyContent: "space-between",
         padding: 16
