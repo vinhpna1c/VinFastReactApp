@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   reelContainer: {
     backgroundColor: 'white',
     padding: 16,
-    marginBottom:4,
+    marginBottom: 4,
   },
 
 
@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#A5A9B5",
   },
+  tabSelected: {
+    color: '#1054DE',
+    borderBottomWidth: 1,
+    paddingBottom: 12,
+    borderBottomColor: '#1054DE',
+  }
 });
 
 export default styles;

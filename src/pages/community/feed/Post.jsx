@@ -14,6 +14,9 @@ import styles from "./style";
 import { getTimeDiffString } from '../../../utils/utils';
 import AmityPostController from "../../../controller/amity/amity_post_controller";
 import { getFile } from "@amityco/ts-sdk";
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import Ionicon from 'react-native-vector-icons/Ionicons';
+
 
 const Post = ({ post }) => {
 
@@ -22,9 +25,18 @@ const Post = ({ post }) => {
   const [shared, setShared] = useState(false);
 
   const [images, setImages] = useState([]);
+  const [reactionCount,setReactionCount]=useState(post.reactionCount??0);
 
   const handleLike = () => {
-    setLiked(!liked);
+    const newLiked=!liked;
+    setLiked(newLiked);
+    if(newLiked){
+      setReactionCount(prev=>prev+1)
+
+    }
+    else{
+      setReactionCount(prev=>prev-1)
+    }
   };
 
   const handleComment = () => {
@@ -50,18 +62,15 @@ const Post = ({ post }) => {
           links.push(url + "?size=large")
         }
         else if (p.dataType === 'video') {
-          console.log(p);
+          // console.log(p);
           const videoFile = await getFile(p.data.videoFileId.original);
-          console.log(videoFile.data.fileUrl);
+          // console.log(videoFile.data.fileUrl);
         }
       }
       return links;
 
     }
-
     getImageLinks().then(value => setImages(value));
-
-
   }, []);
 
 
@@ -92,7 +101,7 @@ const Post = ({ post }) => {
       <Text style={styles.content}>{post.data.text}</Text>
       <View style={styles.mediaContainer}>
         {images.map((image,index) => {
-          console.log(image);
+          // console.log(image);
           return (<Image source={{ uri: image }} key={image} style={index==0?styles.topImageContent:styles.otherImageContent} />)
         })}
       </View>
@@ -105,31 +114,27 @@ const Post = ({ post }) => {
       <View style={styles.actions}>
         {/* React  */}
         <TouchableOpacity onPress={handleLike}>
-          <MaterialIcons
-            name={liked ? "favorite-outline" : "favorite-outline"}
+          <FontAwesomeIcon
+            name={liked?'heart':'heart-o'}
             size={24}
-            style={styles.actionIcon}
+            style={liked?{color:'red'}:styles.reactionBtnStyle}
           />
         </TouchableOpacity>
-        <Text style={styles.actionCount}>{post.reactionsCount}</Text>
+        <Text style={styles.actionCount}>{reactionCount}</Text>
 
         {/* Comment */}
         <TouchableOpacity onPress={handleComment} style={styles.action}>
-          <MaterialIcons
-            name={commented ? "textsms" : "textsms"}
+          <Ionicon
+            name='chatbubble-ellipses-outline'
             size={24}
-            style={styles.actionIcon}
+            style={styles.reactionBtnStyle}
           />
         </TouchableOpacity>
         <Text style={styles.actionCount}>{post.commentsCount}</Text>
 
         {/* Share */}
         <TouchableOpacity onPress={handleShare} style={styles.action}>
-          <MaterialIcons
-            name={shared ? "share" : "share"}
-            size={24}
-            style={styles.actionIcon}
-          />
+         <FontAwesomeIcon name="share-square-o" size={24} style={styles.reactionBtnStyle}/>
         </TouchableOpacity>
         <Text style={styles.actionCount}>{post.sharedCount}</Text>
       </View>

@@ -6,8 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from "react-native";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { runQuery, createQuery, queryGlobalFeed } from "@amityco/ts-sdk";
 import Post from "./feed/Post";
 import { Avatar, Button, Divider } from "@rneui/themed";
@@ -21,35 +22,37 @@ import AmityStore from "../../stores/amity/AmityStore";
 import { MobXProviderContext, observer, useLocalObservable, useLocalStore } from "mobx-react";
 import RootStore from "../../stores";
 import { observe } from "mobx";
- function CommunityScreen() {
-  const [posts, setPosts] = useState([]);
-  const navigation = useNavigation();
-  const {amityStore,amityFeedStore}=useContext(MobXProviderContext)as RootStore ;
-  console.log("Amity store in comuunity");
-  console.log(amityStore);
+function CommunityScreen() {
+  const { amityStore, amityFeedStore } = useContext(MobXProviderContext) as RootStore;
 
-    
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
     runQuery(query, ({ data: postList, ...options }) => {
       console.log("Query global");
       if (typeof postList !== "undefined") {
         // setPosts(postList);
-        
-        amityFeedStore.posts=[...postList];
+        console.log("Post list length: " + postList.length);
+        amityFeedStore.posts = [...postList];
       } else {
-        amityFeedStore.posts=[];
+        amityFeedStore.posts = [];
       }
-
-      // console.log(posts[0]);
-      // console.log("Post result:");
-      // console.log(postList[0]);
     });
   };
 
+
   useEffect(() => {
     getGlobalFeed();
+    console.log("Refresh");
   }, []);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getGlobalFeed();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+  const [currenTab, setCurrentTab] = useState('Bảng tin');
 
   return (
     <SafeAreaView>
@@ -79,33 +82,37 @@ import { observe } from "mobx";
         </View>
         <View style={styles.header_bar}>
           <TouchableOpacity style={styles.header_bar_button}>
-            <Text style={styles.header_bar_text}>Bảng Tin</Text>
+            <Text style={[styles.header_bar_text, styles.tabSelected]} >Bảng Tin</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.header_bar_button}>
             <Text style={styles.header_bar_text}>Khám Phá</Text>
           </TouchableOpacity>
         </View>
-       
-        
+
+
       </View>
       <Divider width={1} color="#EBECEF" />
-     
-      <ScrollView style={{ height: '80%' ,backgroundColor:'#EBECEF'}}>
-      <ScrollView horizontal={true}  style={styles.reelContainer}>
-          {amityFeedStore.posts.filter((post) => post["dataType"] === 'text' && post['data']['text'] === '##REEL##').map((p,index) => {
-            
-          return (<MiniReel key={index.toString()}  post={p} />);
+
+      <ScrollView style={{ height: '80%', backgroundColor: '#EBECEF' }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <ScrollView horizontal={true} style={styles.reelContainer}>
+          {amityFeedStore.posts.filter((post) => post["dataType"] === 'text' && post['data']['text'] === '##REEL##').map((p, index) => {
+
+            return (<MiniReel key={index.toString()} post={p} />);
           })}
         </ScrollView>
-        {amityFeedStore.posts.filter((p,index)=>{
-          if(p["dataType"] === 'text')
-          {            
-            if(p['data']['text'] === '##REEL##'){
+        {amityFeedStore.posts.filter((p, index) => {
+          if (p["dataType"] === 'text') {
+            if (p['data']['text'] === '##REEL##') {
               return false;
             }
           }
-          return true;}).map((post) => (
-          <Post  key={post["_id"] ?? Date.now().toString} post={post} />
+          return true;
+        }).map((post) => (
+          <Post key={post["_id"] ?? Date.now().toString} post={post} />
         ))}
       </ScrollView>
     </SafeAreaView>

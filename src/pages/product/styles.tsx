@@ -41,6 +41,11 @@ const styles = StyleSheet.create(
         productItem: {
             // backgroundColor:'yellow',
             flex: 1,
+            // borderColor:'red'
+            // marginRight:8
+        },
+        rightItem:{
+            paddingLeft:32,
         }
         ,
         productImage: {

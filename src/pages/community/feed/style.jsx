@@ -111,6 +111,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  reactionBtnStyle:{
+    color:'#404040'
+  }
 });
 
 export default styles;
