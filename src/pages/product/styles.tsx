@@ -3,13 +3,21 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create(
     {
         container: {
-            backgroundColor: 'black',
+            backgroundColor: '#181A20',
             height: '100%',
         },
         header: {
             flexDirection: 'row',
             justifyContent: 'space-between',
             padding: 16,
+        },
+        body:{
+          padding:16,  
+        },
+        imageTop:{
+            width:'100%',
+            height:200,
+            resizeMode:'contain'
         },
         whiteText: {
             color: 'white'
@@ -70,7 +78,51 @@ const styles = StyleSheet.create(
         priceText:{
             fontSize:10,
             fontWeight:'800'
-        }
+        },
+        colorSection:{
+            flexDirection:'row',
+            justifyContent:'center',
+            padding:16,
+        },
+        colorOption:{
+            height:32,
+            width:32,
+            borderRadius:32,
+            backgroundColor:'white',
+            marginRight:12,
+            justifyContent:'center',
+            alignContent:'center',
+            flexDirection:'row',
+            padding:4
+            
+        },
+        bookingButton:{
+            paddingHorizontal:16,
+            paddingVertical:8,
+            backgroundColor:'white',
+            borderRadius:10,
+        },
+
+        shopSection:{
+            flexDirection:'row',
+            justifyContent:'space-between',
+            alignItems:'center',
+        },
+        productTitle:{
+            fontSize:30,
+            fontWeight:'700',
+            paddingVertical:8,
+        },
+        detailTitle:{
+            fontSize:17,
+            fontWeight:'800',
+            paddingVertical:8,
+        },
+        detailContent:{
+            fontSize:15,
+        fontWeight:'500',  
+        padding:8,
+          }
 
 
 

@@ -8,7 +8,12 @@ import ProductTypeButton from './components/ProductTypeButton';
 import { useState } from 'react';
 import vehicles from './mock_data';
 import Divider from './components/Divider';
+import { useNavigation, useRoute } from '@react-navigation/native';
 export default function ProductScreen() {
+    const route=useRoute();
+    const navigation=useNavigation();
+    console.log(route.name);
+    
     const [productType, setProductType] = useState('All');
     const productTypes = [
         "All",
@@ -40,7 +45,7 @@ export default function ProductScreen() {
                         // console.log(vehicle)
                         const vehicle = item;
                         return (
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>navigation.navigate('product',{'screen':'product-detail'})}>
                                 <View key={vehicle.name} style={[styles.productItem, index % 2 == 1 ? styles.rightItem : null]}>
                                     <Image key={vehicle.name} source={vehicle.uri} style={styles.productImage} />
                                     <Text style={[styles.whiteText, styles.productName]}>{vehicle.name}</Text>

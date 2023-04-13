@@ -12,6 +12,7 @@ import ProductScreen from "../../../pages/product";
 import PersonalScreen from "../../../pages/personal";
 import CommunityScreen from "../../../pages/community";
 import CommunityNavigation from "./CommunityNavigation";
+import ProductNavigation from "./ProductNavigation";
 
 
 export function BottomBarNavigation() {
@@ -31,8 +32,8 @@ export function BottomBarNavigation() {
           }}
         />
         <Tab.Screen
-          name="Product"
-          component={ProductScreen}
+          name="product"
+          component={ProductNavigation}
           options={{
             tabBarLabel: "Product",
             tabBarIcon: ({ color }) => (

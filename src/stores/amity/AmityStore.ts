@@ -24,7 +24,8 @@ class AmityStore {
 
     login(username: string): void {
         const sessionHandler: Amity.SessionHandler = {
-            sessionWillRenewAccessToken(renewal) {
+            sessionWillRenewAccessToken:(renewal)=> {
+                console.log("renew");
                 renewal.renew();
             },
         };

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   body: {
-    backgroundColor: "#1c1c1c",
+    backgroundColor: '#181A20',
   },
   iconheader: {
     display: "flex",
