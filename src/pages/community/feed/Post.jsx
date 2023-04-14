@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Modal,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Avatar, Divider } from "@rneui/themed";
@@ -16,7 +17,8 @@ import AmityPostController from "../../../controller/amity/amity_post_controller
 import { getFile } from "@amityco/ts-sdk";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-
+import {} from 'react-native-image-viewing';
+import ImageViewer from "react-native-image-zoom-viewer";
 
 const Post = ({ post }) => {
 
@@ -26,6 +28,12 @@ const Post = ({ post }) => {
 
   const [images, setImages] = useState([]);
   const [reactionCount,setReactionCount]=useState(post.reactionCount??0);
+
+  const [showImage,setShowImage]=useState(false);
+  console.log(images);
+  const toggleDisplay=()=>{
+    setShowImage(prev=>!prev)
+  };
 
   const handleLike = () => {
     const newLiked=!liked;
@@ -102,13 +110,28 @@ const Post = ({ post }) => {
       <View style={styles.mediaContainer}>
         {images.map((image,index) => {
           // console.log(image);
-          return (<Image source={{ uri: image }} key={image} style={index==0?styles.topImageContent:styles.otherImageContent} />)
+          return (
+            // <TouchableOpacity key={image}  onPress={()=>setShowImage(true)}>
+               
+            // </TouchableOpacity>
+             <Image key={image}  source={{ uri: image }} style={index==0?styles.topImageContent:styles.otherImageContent} />
+          
+          )
         })}
       </View>
+      
+      {/* {
+        showImage && 
+        <Modal 
+        visible={showImage} 
+        transparent={true} 
+        onRequestClose={()=>setShowImage(false)}>
+        <ImageViewer imageUrls={images.map((imageUrl)=>{{url:imageUrl}})}/>
+        
+        </Modal>  
+        
+      } */}
 
-      {/* {post.image && (
-          <Image source={{ uri: post.image }} style={styles.image} />
-        )} */}
 
 
       <View style={styles.actions}>
