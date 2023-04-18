@@ -30,7 +30,7 @@ const Post = ({ post }) => {
   const [reactionCount,setReactionCount]=useState(post.reactionCount??0);
 
   const [showImage,setShowImage]=useState(false);
-  console.log(images);
+  
   const toggleDisplay=()=>{
     setShowImage(prev=>!prev)
   };
@@ -83,7 +83,7 @@ const Post = ({ post }) => {
 
 
   const timeDiff = getTimeDiffString(post['createdAt'] ?? "");
-
+console.log("Post: "+JSON.stringify(post))
 
   return (
     <View style={styles.container}>

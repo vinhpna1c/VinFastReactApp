@@ -1,70 +1,60 @@
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native"
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Video from 'react-native-video';
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from 'react-native-elements';
 import ReelProgress from "./ReelProgress";
 import { Image } from "react-native-elements";
 import { getTimeDiffString } from '../../../utils/utils';
+import { MobXProviderContext } from "mobx-react";
+import RootStore from "../../../stores";
 // import * as Contants from '../../../utils/constants';
-const ReelScreen = () => {
 
-    const DATA = [
-        {
-            "_id": "1",
-            "uri": "https://api.amity.co/api/v3/files/642bc4466f323b01dd6d7765/download",
-            "createdAt": "2023-04-04T06:31:40.654Z",
-            "displayName": "99",
-            "avatarUrl": "https://pbs.twimg.com/profile_images/1102856169088053249/7iZzU6J0_400x400.png",
-            "dataType": "video",
-        },
-        {
-            "_id": "2",
-            "uri": "https://api.amity.co/api/v3/files/642bc4466f323b01dd6d7765/download",
-            "createdAt": "2023-04-04T06:31:40.654Z",
-            "displayName": "99",
-            "avatarUrl": "https://pbs.twimg.com/profile_images/1102856169088053249/7iZzU6J0_400x400.png",
-            "dataType": "video",
-        },
-        {
-            "_id": "2",
-            "uri": "https://shop.vinfastauto.com/on/demandware.static/-/Sites-app_vinfast_vn-Library/default/dwc1a7c1f3/images/Lux-A/hinh-anh-gia-xe-VinFast-Lux-A2.0-ban-tieu-chuan-mau-do-mystique-red.png",
-            "createdAt": "2023-04-04T06:31:40.654Z",
-            "displayName": "99",
-            "avatarUrl": "https://pbs.twimg.com/profile_images/1102856169088053249/7iZzU6J0_400x400.png",
-            "dataType": "image",
-        },
-    ];
+
+const DEFAULT_REEL_DURATION=10; //in seconds
+const ReelScreen = () => {
+    const {amityFeedStore} =useContext(MobXProviderContext)as RootStore;
+    console.log("reels: "+amityFeedStore.reels);
+    console.log(amityFeedStore.reels[0]);
+
     const videoRef = useRef(null);
     const navigation = useNavigation();
     const [videoIndex, setVideoIndex] = useState(0);
+    const metaData=amityFeedStore.reels[videoIndex].metaData;
+    let duration=DEFAULT_REEL_DURATION;
+    if(metaData['video']!=null)
+    {
+       duration= parseFloat(metaData['video']['duration']??'10');
+    }
+    console.log("Duration: "+duration)
 
-    console.log(DATA[videoIndex]);
+
+    console.log();
     return (
         <View style={styles.outsideContainer}>
             <View style={styles.insideContainer}>
-                {DATA[videoIndex].dataType === 'video' && <Video
-                    key={DATA[videoIndex]._id}
+                {amityFeedStore.reels[videoIndex].dataType === 'video' && <Video
+                    key={amityFeedStore.reels[videoIndex].id}
                     ref={videoRef}
-                    source={{ uri: DATA[videoIndex].uri }}
+                    source={{ uri: amityFeedStore.reels[videoIndex].uri }}
                     paused={false}
                     style={styles.video}
                     resizeMode="contain"
                     onEnd={() => {
                         console.log("end of video")
-                        if (videoIndex == DATA.length - 1) {
+                        if (videoIndex == amityFeedStore.reels.length - 1) {
                             navigation.goBack();
                         }
                         else {
-                            setVideoIndex(videoIndex < DATA.length - 1 ? (videoIndex + 1) : DATA.length - 1);
+                            setVideoIndex(videoIndex < amityFeedStore.reels.length - 1 ? (videoIndex + 1) : amityFeedStore.reels.length - 1);
                         }
                     }}
                 />}
                 {
-                    DATA[videoIndex].dataType === 'image' && <Image source={{
-                        uri: DATA[videoIndex].uri
+                    amityFeedStore.reels[videoIndex].dataType === 'image' && <Image source={{
+                        uri: amityFeedStore.reels[videoIndex].uri
                     }} 
                     style={{height:200, width:300}}/>
                 }
@@ -74,7 +64,14 @@ const ReelScreen = () => {
                 }} />
                 <TouchableOpacity style={styles.rightOverlay} onPress={() => {
                     console.log("left tab");
-                    setVideoIndex(videoIndex < DATA.length - 1 ? (videoIndex + 1) : DATA.length - 1);
+                    if(videoIndex<amityFeedStore.reels.length-1)
+                    {
+                        setVideoIndex(videoIndex + 1);
+                    }
+                    else{
+                        navigation.goBack();
+                    }
+                    
                 }} />
             </View>
             <View style={styles.header}>
@@ -83,14 +80,14 @@ const ReelScreen = () => {
 
                         size={48}
                         rounded
-                        source={{ uri: DATA[videoIndex].avatarUrl }}
+                        source={{ uri: amityFeedStore.reels[videoIndex].avatarUrl }}
                         containerStyle={{ marginRight: 4 }}
                     // style={styles.avatar}
                     />
                     <View style={{  }}>
 
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>{DATA[videoIndex].displayName}</Text>
-                        <Text style={{ color: 'white', fontWeight: '300' }}>{getTimeDiffString(DATA[videoIndex].createdAt)}</Text>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>{amityFeedStore.reels[videoIndex].displayName}</Text>
+                        <Text style={{ color: 'white', fontWeight: '300' }}>{getTimeDiffString(amityFeedStore.reels[videoIndex].createdAt)}</Text>
 
                     </View>
                 </View >
@@ -106,7 +103,7 @@ const ReelScreen = () => {
 
             </View>
             <View style={{ height: 20, width: '100%' }}>
-                <ReelProgress key={DATA[videoIndex]._id} duration={10} />
+                <ReelProgress key={amityFeedStore.reels[videoIndex].id} duration={duration} />
             </View>
         </View>
     )

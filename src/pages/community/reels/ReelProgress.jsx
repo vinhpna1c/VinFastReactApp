@@ -11,7 +11,7 @@ function ReelProgress(props)
         const interval = setInterval(() => {
           setProgress((prevProgress) =>{ 
             
-            console.log(prevProgress);
+    
             if(prevProgress<duration)
             {
                 return( prevProgress + 1);

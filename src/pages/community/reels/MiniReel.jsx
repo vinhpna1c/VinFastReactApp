@@ -1,50 +1,87 @@
-import { useEffect, useState } from "react";
-import { View, StyleSheet,Text,Image, TouchableOpacity } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import Video from 'react-native-video';
 import AmityPostController from "../../../controller/amity/amity_post_controller";
 import { useNavigation } from "@react-navigation/native";
+import { MobXProviderContext } from "mobx-react";
+import RootStore from "../../../stores";
+import { getPost, getUser } from "@amityco/ts-sdk";
+
 
 function MiniReel({ post }) {
-    const navigation=useNavigation();
-    
-    const [reelData,setReelData]=useState(["",""]);
-    
-    
-    useEffect(()=>{
-        const children=post['children']??[];
-        if(children.length>0)
-        {
-            AmityPostController.getUrlFromPost(children[0]).then(value=>setReelData(value));
-        }
+    const navigation = useNavigation();
 
-    },[]);
-    
+    const [reelData, setReelData] = useState({});
+    const { amityFeedStore } = useContext(MobXProviderContext);
+    // console.log(amityFeedStore.reels);
+    // console.log(post['postedUserId'])
+
+    // console.log("Post "+post);
+    useEffect(() => {
+        const children = post['children'] ?? [];
+        const handleData = async () => {
+            if (children.length > 0) {
+
+                const user = (await getUser('99')).data;
+                
+                for (let i = 0; i < children.length; i++) {
+
+                    const childPostID = children[i];
+                    console.log("Child: " + childPostID);
+
+                    const post = await AmityPostController.getDataFromPost(childPostID);
+                    console.log(post)
+                    if (i == 0) {
+                        setReelData(post);
+                    }
+                    amityFeedStore.addReel({
+                        id: post.id,
+                        createdAt: post.createdAt,
+                        uri: post.fileUrl,
+                        postedUserId: post.postedUserId,
+                        dataType: post.dataType,
+                        displayName:post.postedUserId,
+                        avatarUrl:user.avatarCustomUrl,
+                        metaData:post.fileMetaData,
+                    })
+                }
+
+
+
+
+            }
+        };
+        handleData();
+
+
+    }, []);
+
 
     return (
-       <TouchableOpacity onPress={()=>navigation.navigate('community',{'screen':'reel'})}>
-        <View style={styles.container}>
-            <View style={styles.topContainer}>
-              {
-            reelData[1]==='image'&&<Image source={{ uri: reelData[0] }} key={reelData[0]} style={{ height: '98%', width: '98%' }} />
-           
-              }
-              {
-                 reelData[1]==='video'&&<Video
-                 key={reelData[0]}
-                
-                 source={{ uri:reelData[0] }}
-                 paused={true}
-                 style={{ height: '98%', width: '98%' }}
-                 resizeMode="contain"
-                
-             />
-              }
+        <TouchableOpacity onPress={() => navigation.navigate('community', { 'screen': 'reel' })}>
+            <View style={styles.container}>
+                <View style={styles.topContainer}>
+                    {
+                        reelData.dataType === 'image' && <Image source={{ uri: reelData.fileUrl }} key={reelData.fileUrl} style={{ height: '98%', width: '98%' }} />
+
+                    }
+                    {
+                        reelData.dataType === 'video' && <Video
+                            key={reelData.fileUrl}
+
+                            source={{ uri: reelData.fileUrl }}
+                            paused={true}
+                            style={{ height: '98%', width: '98%' }}
+                            resizeMode="contain"
+
+                        />
+                    }
+                </View>
+                <View style={styles.bottomContainer}>
+                    <Text style={styles.textStyle} numberOfLines={1} ellipsizeMode="tail">{post['postedUserId'] ?? ""}</Text>
+                </View>
             </View>
-            <View style={styles.bottomContainer}>
-                <Text style={styles.textStyle} numberOfLines={1} ellipsizeMode="tail">{post['postedUserId']??""}</Text>
-            </View>
-        </View>
-        </TouchableOpacity> 
+        </TouchableOpacity>
     )
 }
 
@@ -64,29 +101,29 @@ const styles = StyleSheet.create({
     },
     image: {},
     topContainer: {
-        flex:1,
-        borderTopLeftRadius:8,
-        borderTopRightRadius:8,
+        flex: 1,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
         // backgroundColor:"red",
-        
-        
+
+
 
     },
     bottomContainer: {
-        height:45,
+        height: 45,
         borderTopColor: '#cccccc',
         borderTopWidth: 0.5,
-        
-        borderBottomLeftRadius:8,
-        borderBottomRightRadius:8,
-        justifyContent:'center',
-        padding:8,
+
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
+        justifyContent: 'center',
+        padding: 8,
 
 
     },
-    textStyle:{
-fontSize:12,
-fontWeight:'500',
+    textStyle: {
+        fontSize: 12,
+        fontWeight: '500',
 
     }
 });

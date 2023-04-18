@@ -21,10 +21,13 @@ import MiniReel from "./reels/MiniReel";
 import AmityStore from "../../stores/amity/AmityStore";
 import { MobXProviderContext, observer, useLocalObservable, useLocalStore } from "mobx-react";
 import RootStore from "../../stores";
-import { observe } from "mobx";
+import { FAB } from '@react-native-material/core'
+import FloatingButton from "./components/FloatingButton";
+
+
 function CommunityScreen() {
   const { amityStore, amityFeedStore } = useContext(MobXProviderContext) as RootStore;
-
+  const navigation = useNavigation();
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
     runQuery(query, ({ data: postList, ...options }) => {
@@ -37,6 +40,8 @@ function CommunityScreen() {
         amityFeedStore.posts = [];
       }
     });
+
+
   };
 
 
@@ -115,6 +120,10 @@ function CommunityScreen() {
           <Post key={post["_id"] ?? Date.now().toString} post={post} />
         ))}
       </ScrollView>
+
+      <FloatingButton onTap={() => navigation.navigate('community', { 'screen': 'create-post' })} />
+
+
     </SafeAreaView>
   );
 }

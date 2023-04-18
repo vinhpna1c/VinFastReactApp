@@ -52,14 +52,15 @@ function LoginScreen() {
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
-          await amityStore.login("99");
+          //replce with username later
+          await amityStore.login(email.length>0?email:'99');
           navigation.navigate("signned");
         }}
       >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      <Button title="Go to reeel" onPress={()=>{navigation.navigate('reels')}}/>
+      {/* <Button title="Go to reeel" onPress={()=>{console.log(email)}}/> */}
     </View>
   );
 }
