@@ -16,10 +16,15 @@ const styles=StyleSheet.create({
     },
     textSection:{
         // height:60,
-        backgroundColor:'yellow',
+        // backgroundColor:'yellow',
     },
     contentSection:{
-
+        // backgroundColor:'yellow',
+        flexDirection:'row',
+        flexWrap:'wrap',
+        width:'100%',
+        height:'100%',
+        justifyContent:'space-between'
     },
     bottomSection:{
         marginTop:8,
@@ -33,7 +38,14 @@ const styles=StyleSheet.create({
     bottomOptionItem:{
         paddingHorizontal:20,
         paddingVertical:12,
-    }
+    },
+    miniImagePicked:{
+    //  flex:1,
+
+
+        
+
+    },
 
 })
 export default styles;

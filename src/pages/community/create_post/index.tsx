@@ -6,15 +6,17 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native";
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useRef } from "react";
-import { pickImages } from "../../../controller/images/image_picker";
-
-
+import { useRef, useState } from "react";
+import { MediaData, pickImages } from "../../../controller/images/image_picker";
+import MiniImagePicked from "../components/MiniImagePicked";
+import MiniVideoPicked from "../components/MiniVideoPicked";
 
 
 function CreatePostScreen(): JSX.Element {
+    const [mediaDatas, setMediaDatas] = useState<MediaData[]>([]);
     const sheetRef = useRef<BottomSheet>(null);
     const navigation = useNavigation();
+    console.log(mediaDatas);
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -33,42 +35,57 @@ function CreatePostScreen(): JSX.Element {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <TextInput style={styles.textSection} multiline={true} placeholder="Bạn đang nghĩ gì?" />
                 <View style={styles.contentSection}>
-
+                    {mediaDatas.filter((media) => media.mime.indexOf("image") >= 0).map((media, index) => {
+                        return (
+                            <MiniImagePicked key={index} path={media.path} />
+                        )
+                    }
+                    )}
+                     {mediaDatas.filter((media) => media.mime.indexOf("video") >= 0).map((media, index) => {
+                        return (
+                            <MiniVideoPicked key={index} path={media.path} />
+                        )
+                    }
+                    )}
                 </View>
+                <View style={{ height: 200 }} />
             </ScrollView>
 
             <View>
                 <Text>Bottom</Text>
                 <Text>Create Post</Text>
-                
+
             </View>
             <BottomSheet
-                    ref={sheetRef}
-                    snapPoints={[200]}
-                    style={styles.bottomSection}
-                >
-                    <BottomSheetView>
-                       <BottomOption title="Thêm hình ảnh/ video"
-                        onTap={()=>pickImages()}
-                        />
-                       <BottomOption title="Video trực tiếp"/>
-                       <BottomOption title="Gắn thông tin xe"/>
-                    </BottomSheetView>
-                </BottomSheet>
+                ref={sheetRef}
+                snapPoints={[200]}
+                style={styles.bottomSection}
+            >
+                <BottomSheetView>
+                    <BottomOption title="Thêm hình ảnh/ video"
+                        onTap={async () => {
+                            const dataPicked = await pickImages();
+                            console.log(dataPicked);
+                            setMediaDatas(dataPicked);
+                        }}
+                    />
+                    <BottomOption title="Video trực tiếp" />
+                    <BottomOption title="Gắn thông tin xe" />
+                </BottomSheetView>
+            </BottomSheet>
         </SafeAreaView>
     )
 }
 
 
-type BottomOptionProps={
-    title?:string,
-    onTap?:((event: GestureResponderEvent) => void),
+type BottomOptionProps = {
+    title?: string,
+    onTap?: ((event: GestureResponderEvent) => void),
 }
-function BottomOption(props:BottomOptionProps):JSX.Element
-{
+function BottomOption(props: BottomOptionProps): JSX.Element {
     return (
         <TouchableOpacity onPress={props.onTap} style={styles.bottomOptionItem}>
-            <Text>{props.title??""}</Text>
+            <Text>{props.title ?? ""}</Text>
         </TouchableOpacity>
     )
 }

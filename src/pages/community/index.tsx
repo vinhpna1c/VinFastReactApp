@@ -15,6 +15,7 @@ import { Avatar, Button, Divider } from "@rneui/themed";
 
 import styles from "./style";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import ReelScreen from "./reels";
 import MiniReel from "./reels/MiniReel";
@@ -63,26 +64,22 @@ function CommunityScreen() {
     <SafeAreaView>
       <View style={styles.headerside}>
         <View style={styles.header}>
-          <Avatar
-            size={40}
-            rounded
-            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-          />
-          <View>
-            <Text style={{ color: "black" }}> Nguyen Ho Duy Tri</Text>
-            <Text style={{ color: "black" }}>@tringuyen</Text>
+          <View style={{flexDirection:'row'}}>
+            <Avatar
+              size={40}
+              rounded
+              source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            />
+            <View>
+              <Text style={{ color: "black" }}> Nguyen Ho Duy Tri</Text>
+              <Text style={{ color: "black" }}>@tringuyen</Text>
+            </View>
           </View>
+
           <View style={styles.headericon}>
-            <MaterialIcons
-              name="favorite-outline"
-              color="black"
-              style={styles.iconheader}
-            />
-            <MaterialIcons
-              name="notifications"
-              color="black"
-              style={styles.iconheader}
-            />
+            <IonIcon name="md-chatbubbles-outline" color='black' style={styles.iconheader} onPress={()=>navigation.navigate('community',{screen:'chat'})} />
+            <IonIcon name="notifications-outline" color='black' style={styles.iconheader} />
+            
           </View>
         </View>
         <View style={styles.header_bar}>

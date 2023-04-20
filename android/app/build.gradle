@@ -140,7 +140,7 @@ def reactNativeArchitectures() {
 android {
     ndkVersion rootProject.ext.ndkVersion
 
-    compileSdkVersion 33
+    compileSdkVersion 31
     java {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -148,7 +148,7 @@ android {
     defaultConfig {
         applicationId 'com.innovation.vinfast.demo'
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion 33
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()

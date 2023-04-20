@@ -4,15 +4,18 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   headerside: {
     backgroundColor: 'white',
-    marginTop: 40,
+    
+    
   },
   header: {
-    padding: 10,
+    padding: 0,
     display: "flex",
     flexDirection: "row",
+    justifyContent:'space-between',
+    padding:16
   },
   headericon: {
-    paddingLeft: 140,
+    
     display: "flex",
     flexDirection: "row",
   },
