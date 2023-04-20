@@ -4,8 +4,7 @@ import TextDivider from "../components/TextDivider";
 
 function DirectoryTab(): JSX.Element {
     return (
-        <View style={styles.container}>
-            
+        <View style={styles.container}>  
             <TextDivider text="A"/>
             <ContactItem/>
             <TextDivider text="A"/>

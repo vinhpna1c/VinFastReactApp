@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import { Avatar, Divider } from "react-native-elements";
 
@@ -6,21 +7,24 @@ import { Avatar, Divider } from "react-native-elements";
 
 
 function ChatItem(): JSX.Element {
+    const navigation=useNavigation();
     return (
-        <View style={styles.chatItem}>
-            <Avatar size={40} rounded source={require('../../../../../assets/images/user.jpg')} />
-            <View style={{ marginLeft: 8, flex: 1 }}>
-                <View style={styles.rowSection}>
-                    <Text>Public Community</Text>
-                    <Text>8:00pm</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate('chat-detail')}>
+            <View style={styles.chatItem}>
+                <Avatar size={40} rounded source={require('../../../../../assets/images/user.jpg')} />
+                <View style={{ marginLeft: 8, flex: 1 }}>
+                    <View style={styles.rowSection}>
+                        <Text>Public Community</Text>
+                        <Text>8:00pm</Text>
+                    </View>
+                    <View style={{ ...styles.rowSection, marginBottom: 8 }}>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.leftText} >Danny: @Jackie OMG dude, you’re a rock star!!</Text>
+                        <MessageCountItem messageCount={32} />
+                    </View>
+                    <Divider color='#EBECEF' width={1} />
                 </View>
-                <View style={{...styles.rowSection,marginBottom:8}}>
-                    <Text numberOfLines={2} ellipsizeMode="tail" style={styles.leftText} >Danny: @Jackie OMG dude, you’re a rock star!!</Text>
-                    <MessageCountItem messageCount={32} />
-                </View>
-                <Divider color='#EBECEF' width={1}/>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginBottom:2,
+        marginBottom: 2,
     },
     leftText: {
         maxWidth: '70%',

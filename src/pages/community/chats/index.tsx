@@ -6,11 +6,14 @@ import styles from "./styles";
 import { useState } from "react";
 import RecentTab from "./recent";
 import DirectoryTab from "./directory";
+import *  as ChatController from '../../../controller/amity/amity_chat_controller'
 
 const tabs = ["Recent", "Directory"];
 const tabScreens = [<RecentTab />, <DirectoryTab />];
 function ChatScreen() {
     const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+    // ChatController.getAllChannel();
+    ChatController.getMessagesInChannel('64211e9ffe7f8d1599a5bde9');
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerSection}>

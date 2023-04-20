@@ -3,6 +3,7 @@ import CommunityScreen from "../../../pages/community";
 import ReelScreen from "../../../pages/community/reels";
 import CreatePostScreen from "../../../pages/community/create_post";
 import ChatScreen from "../../../pages/community/chats";
+import ChatDetailScreen from "../../../pages/community/chats/chat-detail";
 
 function CommunityNavigation() {
     const Stack = createNativeStackNavigator();
@@ -12,6 +13,7 @@ function CommunityNavigation() {
             <Stack.Screen name="reel" component={ReelScreen} />
             <Stack.Screen name="create-post" component={CreatePostScreen} />
             <Stack.Screen name="chat" component={ChatScreen} />
+            <Stack.Screen name="chat-detail" component={ChatDetailScreen} />
         </Stack.Navigator>
     );
 }
