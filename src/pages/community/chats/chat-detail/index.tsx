@@ -1,9 +1,12 @@
+import { liveMessages } from "@amityco/ts-sdk";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View,Text, TextInput, TouchableOpacity,StyleSheet, ScrollView } from "react-native";
 import { Avatar } from "react-native-elements";
 
+
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { createTextMessage } from "../../../../controller/amity/amity_chat_controller";
 
 type ChatDetailProps={
     channelID:string
@@ -35,10 +38,15 @@ function ChatDetailScreen(props:ChatDetailProps):JSX.Element
     const sendMessage = () => {
       if (message.trim() !== '') {
         setMessages([...messages, { id: messages.length + 1, sender: 'Me', text: message.trim() }]);
+        createTextMessage().then(()=>console.log("Message sent!"));
         setMessage('');
       }
     };
-  
+    const [msgData, setMessageData] = useState<Amity.LiveCollection<Amity.Message>>();
+  const { data: messagess = [], onNextPage, hasNextPage, loading, error } = msgData ?? {};
+  console.log("Curren message length: "+msgData?.data.length)
+
+  useEffect(() => liveMessages({ subChannelId:'64211e9ffe7f8d1599a5bde9' }, setMessageData), ['64211e9ffe7f8d1599a5bde9']);
     return (
       <View style={styles.container}>
         <View style={styles.headerSection}>
