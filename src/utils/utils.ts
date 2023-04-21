@@ -1,4 +1,6 @@
-export function getTimeDiffString(postTime: number|string): string {
+import { getFile } from "@amityco/ts-sdk";
+
+export function getTimeDiffString(postTime: number | string): string {
   // Convert the post time to a Date object
   var postDate = new Date(postTime);
 
@@ -32,6 +34,20 @@ export function getTimeDiffString(postTime: number|string): string {
 export function parseDateFromString(dateStr: string): Date {
   var date = new Date(dateStr);
   return date;
+}
+
+export async function getUrlFromFileId(fileID: string): Promise<string> {
+
+  try {
+    const file = await getFile(fileID);  
+    return file.data.fileUrl ?? "";
+  } catch (error) {
+    console.log("Error while get file");
+  }
+  return "";
+  
+
+
 }
 
 

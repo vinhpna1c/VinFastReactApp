@@ -1,20 +1,48 @@
 import { useNavigation } from "@react-navigation/native";
+import { channel } from "expo-updates";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import { Avatar, Divider } from "react-native-elements";
+import NavigationType from "../../../../controller/navigator/NavigationType";
+import { getUrlFromFileId } from "../../../../utils/utils";
+import { useEffect, useState } from "react";
 
 
+type ChatItemProps = {
+    channelData: Amity.Channel,
+}
+
+function ChatItem(props: ChatItemProps): JSX.Element {
+    const navigation = useNavigation<NavigationType>();
+    const channel = props.channelData;
+    const [avatarURL, setAvatarURL] = useState<string | undefined>(undefined);
+    useEffect(() => {
+        getUrlFromFileId("Url: " + channel.avatarFileId ?? "").then(
+            (url) => {
+                if (url.length > 0) {
+                    setAvatarURL(url)
+                }else{
+                    setAvatarURL(undefined);
+                }
+                console.log("Current avatar: " + avatarURL)
+            }
+        )
+    }, [])
 
 
-function ChatItem(): JSX.Element {
-    const navigation=useNavigation();
     return (
-        <TouchableOpacity onPress={()=>navigation.navigate('chat-detail')}>
+        <TouchableOpacity onPress={() => navigation.navigate('chat-detail')}>
             <View style={styles.chatItem}>
-                <Avatar size={40} rounded source={require('../../../../../assets/images/user.jpg')} />
+                <Avatar
+                    size={40}
+                    rounded
+                    source={{ uri: avatarURL }}
+                    title={channel.displayName ? channel.displayName.substring(0, 2) : 'CG'}
+                // containerStyle={{backgroundColor:'grey'}} 
+                />
                 <View style={{ marginLeft: 8, flex: 1 }}>
                     <View style={styles.rowSection}>
-                        <Text>Public Community</Text>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.leftText} >{channel.displayName}</Text>
                         <Text>8:00pm</Text>
                     </View>
                     <View style={{ ...styles.rowSection, marginBottom: 8 }}>

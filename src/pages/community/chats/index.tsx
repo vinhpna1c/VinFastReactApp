@@ -13,7 +13,7 @@ const tabScreens = [<RecentTab />, <DirectoryTab />];
 function ChatScreen() {
     const [selectedTabIndex, setSelectedTabIndex] = useState(0);
     // ChatController.getAllChannel();
-    ChatController.getMessagesInChannel('64211e9ffe7f8d1599a5bde9');
+    // ChatController.getMessagesInChannel('64211e9ffe7f8d1599a5bde9');
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerSection}>
