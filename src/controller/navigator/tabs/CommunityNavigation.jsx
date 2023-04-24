@@ -13,7 +13,9 @@ function CommunityNavigation() {
             <Stack.Screen name="reel" component={ReelScreen} />
             <Stack.Screen name="create-post" component={CreatePostScreen} />
             <Stack.Screen name="chat" component={ChatScreen} />
-            <Stack.Screen name="chat-detail" component={ChatDetailScreen} />
+            <Stack.Screen name="chat-detail" component={ChatDetailScreen}>
+               
+            </Stack.Screen>
         </Stack.Navigator>
     );
 }

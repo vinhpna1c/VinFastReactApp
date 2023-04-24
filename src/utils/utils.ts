@@ -42,7 +42,7 @@ export async function getUrlFromFileId(fileID: string): Promise<string> {
     const file = await getFile(fileID);  
     return file.data.fileUrl ?? "";
   } catch (error) {
-    console.log("Error while get file");
+    console.error("Error while get file");
   }
   return "";
   

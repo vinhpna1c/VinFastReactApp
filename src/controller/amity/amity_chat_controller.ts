@@ -2,6 +2,7 @@ import { MessageContentType, createMessage, createQuery, getChannel, liveMessage
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import RootStore from "../../stores";
+import { channel } from "expo-updates";
 
 
 
@@ -17,14 +18,16 @@ const getChannelByID=async(channelID:string)=>{
 }
 const getMessagesInChannel=async(channelID:string)=>
 {
-   console.log( JSON.stringify( await queryMessages({subChannelId:channelID})));
+  console.log("call query channel: "+channelID)
+   console.log( "Message query: "+JSON.stringify( (await queryMessages({subChannelId:channelID,includeDeleted:false,})).data.length));
 }
-const createTextMessage=async()=>{
-    const textMessage = {
-        subChannelId: '64211e9ffe7f8d1599a5bde9',
+const createTextMessage=async(data:{channel:Amity.Channel,text:string})=>{
+  const {text,channel}  =data;
+  const textMessage = {
+        subChannelId: channel.defaultSubChannelId,
         dataType: MessageContentType.TEXT,
         data: {
-          text: 'Test From react Native',
+          text: text,
         },
         
         metadata: {
@@ -33,7 +36,8 @@ const createTextMessage=async()=>{
       };
 
      const {data:msg} =await createMessage(textMessage);
-     console.log("Message sent: "+msg)
+     
+     console.log("Message sent: "+JSON.stringify(msg))
     
 }
 export {

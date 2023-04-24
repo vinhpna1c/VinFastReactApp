@@ -6,6 +6,7 @@ class AmityStore {
     client = initAmity();
     authToken = "";
     testData="";
+    currentUser='';
 
     constructor() {
         makeObservable(this, {
@@ -27,6 +28,7 @@ class AmityStore {
             sessionWillRenewAccessToken:(renewal)=> {
                 console.log("renew");
                 renewal.renew();
+                
             },
         };
 
@@ -35,6 +37,11 @@ class AmityStore {
            const result= await connectClient({ userId, displayName }, sessionHandler);
            
             console.log("Is login: "+result);
+            if(result)
+            {
+                this.currentUser=username;
+            }
+        
         };
         
 

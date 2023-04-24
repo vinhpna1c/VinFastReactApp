@@ -29,7 +29,7 @@ function RecentTab(): JSX.Element {
     
     return (
         <View>
-           {amityChannelStore.channels.map((channel)=><ChatItem key={channel.channelId} channelData={channel}/>)}            
+           {amityChannelStore.channels.map((channel)=><ChatItem key={channel.channelId} channelData={channel} />)}            
         </View>
     )
 }
