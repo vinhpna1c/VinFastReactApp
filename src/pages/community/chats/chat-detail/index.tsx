@@ -8,12 +8,14 @@ import { Avatar } from "react-native-elements";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { createTextMessage } from "../../../../controller/amity/amity_chat_controller";
 
+
 type ChatDetailProps={
     channelID:string
 }
 
 function ChatDetailScreen(props:ChatDetailProps):JSX.Element
 {
+  
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([
       { id: 1, sender: 'Me', text: 'Hey, how are you?' },
