@@ -14,7 +14,7 @@ const getAllChannel=()=>{
 }
 const getChannelByID=async(channelID:string)=>{
     const channel=await getChannel(channelID);
-    console.log(channel);
+    
 }
 const getMessagesInChannel=async(channelID:string)=>
 {

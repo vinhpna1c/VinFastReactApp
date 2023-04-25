@@ -46,10 +46,10 @@ function CommunityScreen() {
   const getGlobalFeed = () => {
     const query = createQuery(queryGlobalFeed);
     runQuery(query, ({ data: postList, ...options }) => {
-      console.log("Query global");
+      
       if (typeof postList !== "undefined") {
         // setPosts(postList);
-        console.log("Post list length: " + postList.length);
+      
         amityFeedStore.posts = [...postList];
       } else {
         amityFeedStore.posts = [];
@@ -59,7 +59,7 @@ function CommunityScreen() {
 
   useEffect(() => {
     getGlobalFeed();
-    console.log("Refresh");
+    
   }, []);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
