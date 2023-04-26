@@ -45,9 +45,15 @@ export async function getUrlFromFileId(fileID: string): Promise<string> {
     console.error("Error while get file");
   }
   return "";
-  
-
 
 }
+export const uriToBlob = async (uri: string): Promise<Blob> => {
+  console.log(uri)
+  const response = await fetch(uri.replace("file:///","file:/"));
+  const blob = await response.blob();
+
+  return blob;
+};
+
 
 

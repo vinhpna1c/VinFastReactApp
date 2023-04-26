@@ -240,6 +240,7 @@ function CommunityScreen() {
       <Divider width={1} color="#EBECEF" />
 
       {currenTab === "Bảng Tin" ? (
+        <>
         <ScrollView
           style={{ height: "80%", backgroundColor: "#EBECEF" }}
           refreshControl={
@@ -269,7 +270,11 @@ function CommunityScreen() {
             .map((post) => (
               <Post key={post["_id"] ?? Date.now().toString} post={post} />
             ))}
+
+            
         </ScrollView>
+        <FloatingButton onTap={()=>navigation.navigate('community',{screen:'create-post'})}/>
+        </>
       ) : (
         // Khám phá
         <ScrollView

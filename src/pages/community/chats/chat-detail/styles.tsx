@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
     },
+    iconButton: {
+        padding: 2,
+        marginRight: 4,
+    },
     sendButtonText: {
         color: '#fff',
         fontWeight: 'bold',
@@ -71,13 +75,48 @@ const styles = StyleSheet.create({
         color: '#292B32',
         fontSize: 17,
         fontWeight: '400',
-        width:'70%'
+        width: '70%'
 
     },
     content: {
         color: '#898E9E',
         fontSize: 15,
         fontWeight: '400',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        width:'80%',
+        
+
+    },
+
+    mediaContainer:{
+        flexDirection:'row',
+        flexWrap:'wrap',
+        justifyContent:'center'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    miniImage:{
+        height:100,
+        width:100,
+        marginRight:4
     }
 });
 
