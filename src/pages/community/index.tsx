@@ -69,16 +69,17 @@ function CommunityScreen() {
       setRefreshing(false);
     }, 2000);
   }, []);
-  const [currenTab, setCurrentTab] = useState("Bảng Tin");
+  const [currentTab, setCurrentTab] = useState("Bảng Tin");
+
   const DATA1 = [
     {
       id: "1",
-      title: "Ngân Hàng",
+      title: "Ngân hàng",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
       id: "2",
-      title: "Vận Tải",
+      title: "Vận tải",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
 
@@ -99,7 +100,7 @@ function CommunityScreen() {
     },
     {
       id: "6",
-      title: "May Mặc",
+      title: "May mặc",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
@@ -111,21 +112,21 @@ function CommunityScreen() {
   const DATA2 = [
     {
       id: "1",
-      title: "Xe điện VinFast",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
       location: "HN",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
       id: "2",
-      title: "xe điện VinFast",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
       location: "HCM",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
       id: "3",
-      title: "xe điện VinFast",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
 
       location: "ĐN",
@@ -133,39 +134,39 @@ function CommunityScreen() {
     },
     {
       id: "3",
-      title: "xe điện VinFast",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
 
       location: "ĐN",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
-      id: "3",
-      title: "xe điện VinFast",
+      id: "4",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
 
       location: "ĐN",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
-      id: "3",
-      title: "xe điện VinFast",
+      id: "5",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
 
       location: "ĐN",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
-      id: "3",
-      title: "xe điện VinFast",
+      id: "6",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
 
       location: "ĐN",
       img: "https://vcdn-vnexpress.vnecdn.net/2021/03/24/1920x1080-02-3443-1616544131.jpg",
     },
     {
-      id: "3",
-      title: "xe điện VinFast",
+      id: "7",
+      title: "Nhập môn xe điện vinfast",
       date: `${format(new Date(), "dd.MM.yyyy")}`,
 
       location: "ĐN",
@@ -212,7 +213,7 @@ function CommunityScreen() {
               setCurrentTab("Bảng Tin");
             }}
           >
-            {currenTab === "Khám phá" ? (
+            {currentTab === "Khám phá" ? (
               <Text style={styles.header_bar_text}>Bảng tin</Text>
             ) : (
               <Text style={[styles.header_bar_text, styles.tabSelected]}>
@@ -227,7 +228,7 @@ function CommunityScreen() {
               setCurrentTab("Khám phá");
             }}
           >
-            {currenTab === "Bảng Tin" ? (
+            {currentTab === "Bảng Tin" ? (
               <Text style={styles.header_bar_text}>Khám Phá</Text>
             ) : (
               <Text style={[styles.header_bar_text, styles.tabSelected]}>
@@ -239,7 +240,7 @@ function CommunityScreen() {
       </View>
       <Divider width={1} color="#EBECEF" />
 
-      {currenTab === "Bảng Tin" ? (
+      {currentTab === "Bảng Tin" ? (
         <>
         <ScrollView
           style={{ height: "80%", backgroundColor: "#EBECEF" }}
@@ -277,6 +278,7 @@ function CommunityScreen() {
         </>
       ) : (
         // Khám phá
+
         <ScrollView
           style={{ height: "80%", backgroundColor: "#F5F5F5" }}
           refreshControl={
@@ -299,10 +301,12 @@ function CommunityScreen() {
             <View style={styles.myCommunity_top}>
               <Text style={styles.myCommunity_title}>Cộng đồng của tôi</Text>
 
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                style={{ marginRight: 15, fontSize: 24, fontWeight: "900" }}
-              ></MaterialIcons>
+              <TouchableOpacity onPress={() => {}}>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  style={styles.icon_arrow}
+                ></MaterialIcons>
+              </TouchableOpacity>
             </View>
             <View style={styles.myCommunity_bottom}>
               <FlatList
@@ -310,23 +314,22 @@ function CommunityScreen() {
                 data={DATA1}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    style={{
-                      marginRight: 10,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginBottom: 20,
-                    }}
+                    style={styles.myCommunity_card_item}
                     onPress={() => {}}
                   >
                     <Image
-                      style={{ height: 60, width: 60, borderRadius: 100 }}
+                      style={styles.myCommunity_circle}
                       source={{
                         uri: `${item.img}`,
                       }}
                     ></Image>
-                    <Text>{item.title}</Text>
+                    <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={styles.myCommunity_card_item}
+                    >
+                      {item.title}
+                    </Text>
                   </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.id}
@@ -337,18 +340,14 @@ function CommunityScreen() {
 
           {/* Sự kiện */}
           <View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={styles.myCommunity_title}>Sự Kiện</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                style={{ marginRight: 10, fontSize: 24, fontWeight: "900" }}
-              ></MaterialIcons>
+            <View style={styles.event}>
+              <Text style={styles.event_title}>Sự Kiện</Text>
+              <TouchableOpacity onPress={() => {}}>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  style={styles.icon_arrow}
+                ></MaterialIcons>
+              </TouchableOpacity>
             </View>
             <View>
               <FlatList
@@ -358,79 +357,49 @@ function CommunityScreen() {
                 data={DATA2}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    style={{
-                      height: 148,
-                      width: 192,
-                      marginRight: 10,
-                      backgroundColor: "#E7B0B04D",
-                      borderRadius: 10,
-                      marginBottom: 20,
-                      display: "flex",
-                      justifyContent: "space-around",
-                    }}
+                    style={styles.event_card}
                     onPress={() => {}}
                   >
                     <View>
                       <Image
-                        style={{
-                          height: 95,
-                          width: "100%",
-                          borderTopLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                        }}
+                        style={styles.event_image}
                         source={{
                           uri: `${item.img}`,
                         }}
                       ></Image>
                     </View>
+
                     <View>
                       <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "600",
-                          marginLeft: 10,
-                        }}
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        style={styles.event_card_title}
                       >
                         {item.title}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <View
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          flexDirection: "row",
-                        }}
-                      >
+
+                    <View style={styles.event_card_bottom}>
+                      <View style={styles.event_card_bottom_left}>
                         <MaterialCommunityIcons
                           name="calendar-month"
-                          style={{ color: "blue", fontSize: 20 }}
+                          style={{ color: "blue", fontSize: 16 }}
                         ></MaterialCommunityIcons>
-                        <Text style={{ fontSize: 12, fontWeight: "300" }}>
+                        <Text style={{ fontSize: 10, fontWeight: "300" }}>
                           {item.date}
                         </Text>
                       </View>
-                      <View
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          flexDirection: "row",
-                        }}
-                      >
+
+                      <View style={styles.event_card_bottom_right}>
                         <IonIcon
                           name="location-sharp"
-                          style={{ fontSize: 20, color: "blue" }}
+                          style={{ fontSize: 16, color: "blue" }}
                         ></IonIcon>
-                        <Text style={{ fontSize: 12, fontWeight: "300" }}>
+                        <Text
+                          ellipsizeMode="tail"
+                          numberOfLines={1}
+                          style={{ fontSize: 10, fontWeight: "300" }}
+                        >
                           {item.location}
                         </Text>
                       </View>
@@ -446,19 +415,17 @@ function CommunityScreen() {
           {/*  Danh mục */}
 
           <View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={styles.myCommunity_title}>Danh Mục</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                style={{ marginRight: 10, fontSize: 24, fontWeight: "900" }}
-              ></MaterialIcons>
+            <View style={styles.category}>
+              <Text style={styles.category_title}>Danh Mục</Text>
+              <TouchableOpacity onPress={() => {}}>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  style={styles.icon_arrow}
+                ></MaterialIcons>
+              </TouchableOpacity>
             </View>
+
+            {/* Category 1 */}
 
             <View
               style={{
@@ -466,155 +433,138 @@ function CommunityScreen() {
                 flexDirection: "row",
                 justifyContent: "space-around",
                 width: "100%",
-
                 marginTop: 20,
               }}
             >
-              <ImageBackground
-                source={{
-                  uri: "https://danangaz.com/wp-content/uploads/2020/02/noi-that-o-to.jpg",
-                }}
+              <TouchableOpacity
                 style={{
                   height: 103,
                   width: 207,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  overflow: "hidden",
+                  borderRadius: 10,
                 }}
-                blurRadius={5}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "600" }}
+                <ImageBackground
+                  resizeMode="cover"
+                  source={{
+                    uri: "https://danangaz.com/wp-content/uploads/2020/02/noi-that-o-to.jpg",
+                  }}
+                  style={styles.category_image_backgroud}
                 >
-                  Nội Thất xe
-                </Text>
-              </ImageBackground>
+                  <Text style={styles.category_image_title}>Nội Thất xe</Text>
+                </ImageBackground>
+              </TouchableOpacity>
 
-              <ImageBackground
-                source={{
-                  uri: "https://i-vnexpress.vnecdn.net/2022/10/14/-6450-1665740024.jpg",
-                }}
+              <TouchableOpacity
                 style={{
                   height: 103,
                   width: 120,
+                  overflow: "hidden",
                   borderRadius: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                 }}
-                blurRadius={5}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "600" }}
+                <ImageBackground
+                  source={{
+                    uri: "https://i-vnexpress.vnecdn.net/2022/10/14/-6450-1665740024.jpg",
+                  }}
+                  style={styles.category_image_backgroud}
                 >
-                  Lux A2.0
-                </Text>
-              </ImageBackground>
+                  <Text style={styles.category_image_title}>Lux A2.0</Text>
+                </ImageBackground>
+              </TouchableOpacity>
             </View>
 
+            {/* Category 2 */}
             <View
               style={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-around",
                 width: "100%",
-
                 marginTop: 20,
               }}
             >
-              <ImageBackground
-                source={{
-                  uri: "https://images.autofun.vn/file1/1a67777714474bfd953bf4e257ad4f00_800.jpg",
-                }}
+              <TouchableOpacity
                 style={{
                   height: 103,
                   width: 120,
+                  overflow: "hidden",
                   borderRadius: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                 }}
-                blurRadius={5}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "600" }}
+                <ImageBackground
+                  source={{
+                    uri: "https://images.autofun.vn/file1/1a67777714474bfd953bf4e257ad4f00_800.jpg",
+                  }}
+                  style={styles.category_image_backgroud}
                 >
-                  Bộ sạc
-                </Text>
-              </ImageBackground>
-              <ImageBackground
-                source={{
-                  uri: "https://chieuta.com/wp-content/uploads/2017/05/tho-tinh-di-phuot.jpg",
-                }}
+                  <Text style={styles.category_image_title}>Bộ sạc</Text>
+                </ImageBackground>
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={{
                   height: 103,
                   width: 207,
+                  overflow: "hidden",
                   borderRadius: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                 }}
-                blurRadius={5}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "600" }}
+                <ImageBackground
+                  source={{
+                    uri: "https://chieuta.com/wp-content/uploads/2017/05/tho-tinh-di-phuot.jpg",
+                  }}
+                  style={styles.category_image_backgroud}
                 >
-                  Lái thử
-                </Text>
-              </ImageBackground>
+                  <Text style={styles.category_image_title}>Lái thử</Text>
+                </ImageBackground>
+              </TouchableOpacity>
             </View>
-
+            {/* Category 3 */}
             <View
               style={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-around",
                 width: "100%",
-
                 marginTop: 20,
               }}
             >
-              <ImageBackground
-                source={{
-                  uri: "https://images2.thanhnien.com.vn/Uploaded/chicuong/2022_02_21/vinfast-vento-3-1232.jpg",
-                }}
+              <TouchableOpacity
                 style={{
                   height: 103,
                   width: 207,
+                  overflow: "hidden",
                   borderRadius: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                 }}
-                blurRadius={5}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "600" }}
+                <ImageBackground
+                  resizeMode="cover"
+                  source={{
+                    uri: "https://images2.thanhnien.com.vn/Uploaded/chicuong/2022_02_21/vinfast-vento-3-1232.jpg",
+                  }}
+                  style={styles.category_image_backgroud}
                 >
-                  Xe máy điện
-                </Text>
-              </ImageBackground>
+                  <Text style={styles.category_image_title}>Xe máy điện</Text>
+                </ImageBackground>
+              </TouchableOpacity>
 
-              <ImageBackground
-                source={{
-                  uri: "https://vinfastninhthuan.com.vn/wp-content/uploads/2022/02/vinfast-vietnam.jpg",
-                }}
+              <TouchableOpacity
                 style={{
                   height: 103,
                   width: 120,
+                  overflow: "hidden",
                   borderRadius: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                 }}
-                blurRadius={5}
               >
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "600" }}
+                <ImageBackground
+                  source={{
+                    uri: "https://vinfastninhthuan.com.vn/wp-content/uploads/2022/02/vinfast-vietnam.jpg",
+                  }}
+                  style={styles.category_image_backgroud}
                 >
-                  Xem Thêm
-                </Text>
-              </ImageBackground>
+                  <Text style={styles.category_image_title}>Xem Thêm</Text>
+                </ImageBackground>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

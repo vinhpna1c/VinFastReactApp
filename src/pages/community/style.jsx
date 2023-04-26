@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   myCommunity_title: {
-    fontSize: 17,
+    fontSize: 20,
     fontWeight: "600",
     marginLeft: 15,
   },
@@ -80,10 +80,115 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   myCommunity_circle: {
-    height: 72,
-    width: 72,
-    borderRadius: 50,
-    backgroundColor: "red",
+    height: 60,
+    width: 60,
+    borderRadius: 100,
+  },
+  icon_arrow: {
+    marginRight: 15,
+    fontSize: 32,
+    fontWeight: "900",
+  },
+  myCommunity_card_item: {
+    marginRight: 10,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: 64,
+  },
+  myCommunity_card_title: {
+    width: 64,
+    height: 18,
+    fontSize: 13,
+    lineHeight: 18,
+    textAlign: "center",
+    letterSpacing: -0.1,
+    color: "#292B32",
+  },
+
+  // Sự Kiện
+  event: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  event_title: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginLeft: 15,
+  },
+  event_card: {
+    height: 148,
+    width: 192,
+    marginRight: 10,
+    backgroundColor: "#e8e6df",
+
+    borderRadius: 10,
+    marginBottom: 20,
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  event_image: {
+    height: 95,
+    width: "100%",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  event_card_title: {
+    width: 177,
+    height: 20,
+    fontSize: 12,
+    lineHeight: 18,
+    fontWeight: "600",
+    alignItems: "center",
+    letterSpacing: -0.1,
+    display: "flex",
+    marginLeft: 10,
+  },
+  event_card_bottom: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  event_card_bottom_left: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginLeft: 10,
+  },
+  event_card_bottom_right: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  // Danh Mục
+  category: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  category_title: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginLeft: 15,
+  },
+  category_image_title: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  category_image_backgroud: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   Image,
   FlatList,
@@ -19,19 +18,67 @@ import { observable, observe } from "mobx";
 import { MobXProviderContext, observer, useLocalStore } from "mobx-react";
 import RootStore from "../../stores";
 import { useContext } from "react";
+import SerchBar from "./components/serch_bar";
+import CardCategory from "./components/card_category";
+import vehicles from "../product/mock_data";
+import CardProduct from "./components/card_product";
 
+const categoryData = [
+  {
+    id: "1",
+    image: require("../../../assets/images/otodien.png"),
+    nameCategories: "Ô tô điện",
+  },
+  {
+    id: "2",
+    image: require("../../../assets/images/otoxang.png"),
+    nameCategories: "Ô tô xăng",
+  },
+  {
+    id: "3",
+    image: require("../../../assets/images/xemaycaocap.png"),
+    nameCategories: "Xe máy cao cấp",
+  },
+  {
+    id: "4",
+    image: require("../../../assets/images/xemaytrungcap.png"),
+    nameCategories: "Xe máy trung cấp",
+  },
+  {
+    id: "5",
+    image: require("../../../assets/images/xemayphothong.png"),
+    nameCategories: "Xe máy phổ thông",
+  },
+  {
+    id: "6",
+    image: require("../../../assets/images/pinvatramsacoto.png"),
+    nameCategories: "Pin & trạm sạc ô tô",
+  },
+  {
+    id: "7",
+    image: require("../../../assets/images/pinvatramsacxemay.png"),
+    nameCategories: "Pin & trạm sạc xe máy",
+  },
+  {
+    id: "8",
+    image: require("../../../assets/images/dichvuhaumai.png"),
+    nameCategories: "Dịch vụ hậu mãi",
+  },
+];
+
+console.log(categoryData[0].image);
 function HomeScreen() {
   const { amityStore } = useContext(MobXProviderContext) as RootStore;
   //  console.log(amityStore);
   console.log(amityStore.testData);
 
   return (
-    <SafeAreaView style={{ flex: 1, }}>
+    <SafeAreaView style={{ flex: 1 }}>
       {/* herder side */}
 
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={{flexDirection:'row'}}>
+          <View style={{ flexDirection: "row" }}>
             <Avatar
               size={40}
               rounded
@@ -44,46 +91,30 @@ function HomeScreen() {
           </View>
 
           <View style={styles.headericon}>
-            <MaterialIcons
-              name="favorite-outline"
-              color="white"
-              style={styles.iconheader}
-            />
-            <MaterialIcons
-              name="notifications"
-              color="white"
-              style={styles.iconheader}
-            />
-          </View>
-        </View>
-
-      </View>
-      <ScrollView>
-        {/* Search Bar */}
-
-        <View style={styles.body}>
-          <View style={styles.searchContainer}>
-            <View style={styles.searchWrapper}>
-              <TouchableOpacity>
-                <MaterialIcons
-                  name="search"
-                  color="#898e9e"
-                  style={{ marginLeft: 40, fontWeight: "bold" }}
-                  size={28}
-                />
-              </TouchableOpacity>
-
-              <TextInput
-                style={styles.searchInput}
-                value=""
-                onChange={() => { }}
-                placeholder="Tìm Kiếm"
+            <TouchableOpacity>
+              <MaterialIcons
+                name="favorite-outline"
+                color="white"
+                style={styles.iconheader}
               />
-            </View>
-            <TouchableOpacity style={{ marginRight: 10 }}>
-              <Icon name="list" type="font-awesome" color="#898e9e" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <MaterialIcons
+                name="notifications"
+                color="white"
+                style={styles.iconheader}
+              />
             </TouchableOpacity>
           </View>
+        </View>
+      </View>
+      {/* Content */}
+      <ScrollView>
+        <View style={styles.body}>
+          {/* Search Bar */}
+          <SerchBar />
+
+          {/* Banner */}
           <View style={{ margin: 20 }}>
             <Image
               style={{ height: 200, borderRadius: 20 }}
@@ -93,11 +124,27 @@ function HomeScreen() {
             />
           </View>
 
-          <View style={{ flexDirection: "row" }}>
+          {/* Categories */}
+          <FlatList
+            data={categoryData}
+            horizontal={false}
+            renderItem={({ item }) => {
+              return (
+                <CardCategory
+                  image={item.image}
+                  nameCategories={item.nameCategories}
+                />
+              );
+            }}
+            numColumns={4}
+            keyExtractor={(item) => item.id}
+          />
+
+          {/* <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={styles.card}>
               <Image
                 style={styles.cardImage}
-                source={require("../../../assets/images/xe_1.png")}
+                source={require("../../../assets/images/otodien.png")}
               />
               <Text style={styles.cardText}>ô tô điện</Text>
             </TouchableOpacity>
@@ -153,7 +200,10 @@ function HomeScreen() {
               />
               <Text style={styles.cardText}>Dịch vụ hậu mãi</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
+
+          {/* Bán chạy nhất */}
+          {/* Bán chạy nhất Top */}
 
           <View>
             <View
@@ -169,330 +219,29 @@ function HomeScreen() {
               </TouchableOpacity>
             </View>
           </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignContent: "flex-start",
-            }}
-          >
-            <TouchableOpacity style={styles.card_2}>
-              <Image
-                style={styles.cardImage_2}
-                source={require("../../../assets/images/xe_1.png")}
-              />
-              <View>
-                <Text style={styles.cardText_2}>Vinfast VF 5 flus</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <MaterialIcons
-                    name="star-outline"
-                    color="white"
-                    style={{ fontSize: 20 }}
-                  ></MaterialIcons>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      marginLeft: 5,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    4.5 |
-                  </Text>
-                  <View
-                    style={{
-                      height: 15,
-                      width: 28,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignContent: "center",
-                      marginLeft: 10,
-                      marginTop: 2,
-                    }}
-                  >
-                    <Text style={{ fontSize: 8, fontWeight: "bold" }}>New</Text>
-                  </View>
-                </View>
-                <Text style={styles.cardText_2}>1.057.000.000 VNĐ</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.card_2}>
-              <Image
-                style={styles.cardImage_2}
-                source={require("../../../assets/images/xe_2.png")}
-              />
-              <View>
-                <Text style={styles.cardText_2}>Vinfast FELIZ flus</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <MaterialIcons
-                    name="star-outline"
-                    color="white"
-                    style={{ fontSize: 20 }}
-                  ></MaterialIcons>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      marginLeft: 5,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    4.5 |
-                  </Text>
-                  <View
-                    style={{
-                      height: 15,
-                      width: 28,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignContent: "center",
-                      marginLeft: 10,
-                      marginTop: 2,
-                    }}
-                  >
-                    <Text style={{ fontSize: 8, fontWeight: "bold" }}>New</Text>
-                  </View>
-                </View>
-                <Text style={styles.cardText_2}>1.057.000.000 VNĐ</Text>
-              </View>
-            </TouchableOpacity>
+          {/* Bán chạy nhất bottom */}
+            <FlatList
+              data={vehicles}
+              horizontal={false}
+              renderItem={({ item }) => {
+                return (
+                  <CardProduct
+                    uri={item.uri}
+                    name={item.name}
+                    star={item.star}
+                    price={item.price}
+                    status={item.status}
+                  />
+                );
+              }}
+              numColumns={2}
+              keyExtractor={(item) => item.id}
+            />
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignContent: "flex-start",
-            }}
-          >
-            <TouchableOpacity style={styles.card_2}>
-              <Image
-                style={styles.cardImage_2}
-                source={require("../../../assets/images/xe_4.png")}
-              />
-              <View>
-                <Text style={styles.cardText_2}>vinfast KALARA A2 flus</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <MaterialIcons
-                    name="star-outline"
-                    color="white"
-                    style={{ fontSize: 20 }}
-                  ></MaterialIcons>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      marginLeft: 5,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    4.5 |
-                  </Text>
-                  <View
-                    style={{
-                      height: 15,
-                      width: 28,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignContent: "center",
-                      marginLeft: 10,
-                      marginTop: 2,
-                    }}
-                  >
-                    <Text style={{ fontSize: 8, fontWeight: "bold" }}>New</Text>
-                  </View>
-                </View>
-                <Text style={styles.cardText_2}>1.057.000.000 VNĐ</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.card_2}>
-              <Image
-                style={styles.cardImage_2}
-                source={require("../../../assets/images/xe_5.png")}
-              />
-              <View>
-                <Text style={styles.cardText_2}>Vinfast VF 8 flus</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <MaterialIcons
-                    name="star-outline"
-                    color="white"
-                    style={{ fontSize: 20 }}
-                  ></MaterialIcons>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      marginLeft: 5,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    4.5 |
-                  </Text>
-                  <View
-                    style={{
-                      height: 15,
-                      width: 28,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignContent: "center",
-                      marginLeft: 10,
-                      marginTop: 2,
-                    }}
-                  >
-                    <Text style={{ fontSize: 8, fontWeight: "bold" }}>New</Text>
-                  </View>
-                </View>
-                <Text style={styles.cardText_2}>1.057.000.000 VNĐ</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignContent: "flex-start",
-            }}
-          >
-            <TouchableOpacity style={styles.card_2}>
-              <Image
-                style={styles.cardImage_2}
-                source={require("../../../assets/images/xe_1.png")}
-              />
-              <View>
-                <Text style={styles.cardText_2}>Vinfast VF 8 flus</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <MaterialIcons
-                    name="star-outline"
-                    color="white"
-                    style={{ fontSize: 20 }}
-                  ></MaterialIcons>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      marginLeft: 5,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    4.5 |
-                  </Text>
-                  <View
-                    style={{
-                      height: 15,
-                      width: 28,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignContent: "center",
-                      marginLeft: 10,
-                      marginTop: 2,
-                    }}
-                  >
-                    <Text style={{ fontSize: 8, fontWeight: "bold" }}>New</Text>
-                  </View>
-                </View>
-                <Text style={styles.cardText_2}>1.057.000.000 VNĐ</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.card_2}>
-              <Image
-                style={styles.cardImage_2}
-                source={require("../../../assets/images/xe_2.png")}
-              />
-              <View>
-                <Text style={styles.cardText_2}>Vinfast VF 8 flus</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <MaterialIcons
-                    name="star-outline"
-                    color="white"
-                    style={{ fontSize: 20 }}
-                  ></MaterialIcons>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "white",
-                      marginLeft: 5,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    4.5 |
-                  </Text>
-                  <View
-                    style={{
-                      height: 15,
-                      width: 28,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignContent: "center",
-                      marginLeft: 10,
-                      marginTop: 2,
-                    }}
-                  >
-                    <Text style={{ fontSize: 8, fontWeight: "bold" }}>New</Text>
-                  </View>
-                </View>
-                <Text style={styles.cardText_2}>1.057.000.000 VNĐ</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-
+    
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-export default observer(HomeScreen)
+export default observer(HomeScreen);

@@ -64,16 +64,16 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "black",
-    
+
     // height: 60,
   },
   header: {
     padding: 10,
     display: "flex",
-    
+
     flexDirection: "row",
-    
-    justifyContent:"space-between",
+
+    justifyContent: "space-between",
   },
   headericon: {
     // paddingLeft: 140,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   body: {
-    backgroundColor: '#181A20',
+    backgroundColor: "#181A20",
   },
   iconheader: {
     display: "flex",
@@ -130,8 +130,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   card: {
-    backgroundColor: "#1c1c1c",
-    // backgroundColor: "red",
     marginBottom: 10,
     marginLeft: "2%",
     height: 100,
@@ -143,18 +141,15 @@ const styles = StyleSheet.create({
       height: 3,
     },
     flexDirection: "column",
-
     alignItems: "center",
     justifyContent: "flex-start",
-
     margin: 10,
   },
   card_2: {
     backgroundColor: "#1c1c1c",
-
-    marginBottom: 10,
-    marginLeft: "2%",
-    height: 180,
+    marginBottom: 20,
+    marginLeft: "5%",
+    // height: 180,
     width: 170,
     shadowColor: "#000",
     shadowOpacity: 1,
