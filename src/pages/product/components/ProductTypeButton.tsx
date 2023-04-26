@@ -23,3 +23,4 @@ function ProductTypeButton(props: ProductTypeProps): JSX.Element {
 }
 
 export default ProductTypeButton;
+
