@@ -52,7 +52,7 @@ function ChatDetailScreen({ route }: { route: ChatDetailRouteProps }): JSX.Eleme
   };
 
   //handle modal
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const [pickedMedia, setPickedMedia] = useState<MediaData[]>([]);
 
 
