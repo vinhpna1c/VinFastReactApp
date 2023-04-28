@@ -17,6 +17,7 @@ import { useState } from "react";
 import vehicles from "./mock_data";
 import Divider from "./components/Divider";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import CardProduct from "../home/components/card_product";
 export default function ProductScreen() {
   const route = useRoute();
   const navigation = useNavigation();
@@ -113,6 +114,13 @@ export default function ProductScreen() {
           horizontal={false}
           renderItem={({ item }) => {
             return (
+              // <CardProduct
+              //   uri={item.uri}
+              //   name={item.name}
+              //   star={item.star}
+              //   price={item.price}
+              //   status={item.status}
+              // />
               <CardProduct
                 uri={item.uri}
                 name={item.name}
