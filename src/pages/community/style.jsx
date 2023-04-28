@@ -90,13 +90,13 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   myCommunity_card_item: {
-    marginRight: 10,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
     width: 64,
+    margin: 10,
   },
   myCommunity_card_title: {
     width: 64,

@@ -321,7 +321,7 @@ function CommunityScreen() {
                     <Text
                       ellipsizeMode="tail"
                       numberOfLines={1}
-                      style={styles.myCommunity_card_item}
+                      style={styles.myCommunity_card_title}
                     >
                       {item.title}
                     </Text>

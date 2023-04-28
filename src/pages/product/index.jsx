@@ -42,7 +42,7 @@ export default function ProductScreen() {
           ))}
         </View>
         {/* <Image source={require("../../../assets/images/xe_1.png")}/> */}
-        <FlatList
+        {/* <FlatList
           style={styles.productContainer}
           data={vehicles}
           horizontal={false}
@@ -107,6 +107,23 @@ export default function ProductScreen() {
           }}
           numColumns={2}
           keyExtractor={(item, index) => index}
+        /> */}
+        <FlatList
+          data={vehicles}
+          horizontal={false}
+          renderItem={({ item }) => {
+            return (
+              <CardProduct
+                uri={item.uri}
+                name={item.name}
+                star={item.star}
+                price={item.price}
+                status={item.status}
+              />
+            );
+          }}
+          numColumns={2}
+          keyExtractor={(item) => item.id}
         />
         <View style={{ height: 50 }} />
       </ScrollView>

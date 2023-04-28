@@ -220,25 +220,24 @@ function HomeScreen() {
             </View>
           </View>
           {/* Bán chạy nhất bottom */}
-            <FlatList
-              data={vehicles}
-              horizontal={false}
-              renderItem={({ item }) => {
-                return (
-                  <CardProduct
-                    uri={item.uri}
-                    name={item.name}
-                    star={item.star}
-                    price={item.price}
-                    status={item.status}
-                  />
-                );
-              }}
-              numColumns={2}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
-    
+          <FlatList
+            data={vehicles}
+            horizontal={false}
+            renderItem={({ item }) => {
+              return (
+                <CardProduct
+                  uri={item.uri}
+                  name={item.name}
+                  star={item.star}
+                  price={item.price}
+                  status={item.status}
+                />
+              );
+            }}
+            numColumns={2}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

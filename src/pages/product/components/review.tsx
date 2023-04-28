@@ -75,7 +75,7 @@ function Review(props: review): JSX.Element {
             }}
           >
             <MaterialIcons
-              style={{ color: "white", fontSize: 20 }}
+              style={{ color: "white", fontSize: 24 }}
               name="more-horiz"
             ></MaterialIcons>
           </TouchableOpacity>
@@ -108,7 +108,7 @@ function Review(props: review): JSX.Element {
           <TouchableOpacity>
             <IonIcon
               name="heart-outline"
-              style={{ fontSize: 16, color: "white" }}
+              style={{ fontSize: 24, color: "white" }}
             ></IonIcon>
           </TouchableOpacity>
           <Text style={{ fontSize: 16, color: "white" }}>
