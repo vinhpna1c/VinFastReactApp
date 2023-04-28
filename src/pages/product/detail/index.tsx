@@ -12,12 +12,53 @@ import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIc
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import StarButton from "../components/starButton";
-const colorOptions = ["#D9D9D9", "#9C3A3A", "#2E5CBA", "#684D19", "#000000"];
+import Option from "../components/Option";
 
+// const colorOptions = ["#D9D9D9", "#9C3A3A", "#2E5CBA", "#684D19", "#000000"];
+const colorOptions = [
+  {
+    id: 0,
+    color: "white",
+    image: require("../../../../assets/images/vf8white.png"),
+  },
+  {
+    id: 1,
+    color: "red",
+    image: require("../../../../assets/images/vf8red.png"),
+  },
+  {
+    id: 2,
+    color: "green",
+    image: require("../../../../assets/images/vf8green.png"),
+  },
+  {
+    id: 3,
+    color: "#D3D3D3",
+    image: require("../../../../assets/images/vf8siliver.png"),
+  },
+  {
+    id: 4,
+    color: "blue",
+    image: require("../../../../assets/images/vf8blue.png"),
+  },
+  {
+    id: 5,
+    color: "grey",
+    image: require("../../../../assets/images/vf8grey.png"),
+  },
+  {
+    id: 6,
+    color: "black",
+    image: require("../../../../assets/images/vf8black.png"),
+  },
+];
 function ProductDetail(): JSX.Element {
   const navigation = useNavigation();
 
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [selectedColorcar, setselectedColorcar] = useState(
+    colorOptions[0].image
+  );
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -31,19 +72,23 @@ function ProductDetail(): JSX.Element {
         <FontAwesomeIcon name="heart-o" size={20} style={styles.whiteText} />
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.body}>
-        <Image
-          source={require("../../../../assets/images/top-detail-car.png")}
-          style={styles.imageTop}
-        />
-        <View style={styles.colorSection}>
-          {colorOptions.map((color, index) => (
-            <ColorOption
-              key={index}
-              color={color}
-              selected={selectedColorIndex == index}
-              onTap={() => setSelectedColorIndex(index)}
-            />
-          ))}
+        <View>
+          <Option image={colorOptions[selectedColorIndex].image} />
+          <View style={styles.colorSection}>
+            {colorOptions.map((item) => (
+              <View>
+                <ColorOption
+                  key={item.id}
+                  color={item.color}
+                  selected={selectedColorIndex == item.id}
+                  image={item.image}
+                  onTap={() => {
+                    setSelectedColorIndex(item.id);
+                  }}
+                />
+              </View>
+            ))}
+          </View>
         </View>
         <Text style={[styles.productTitle, styles.whiteText]}>
           VinFast VF 8 Plus
