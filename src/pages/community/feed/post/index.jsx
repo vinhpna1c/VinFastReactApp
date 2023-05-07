@@ -9,12 +9,14 @@ import {} from "react-native-image-viewing";
 import PostContent from "./PostContent";
 import { useNavigation } from "@react-navigation/native";
 import PostDetail from "../post-detail";
+import  BottomSheet  from '@gorhom/bottom-sheet';
 
 const Post = ({ post }) => {
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false);
   const [commented, setCommented] = useState(false);
   const [shared, setShared] = useState(false);
+  const [showComment,setShowComment]=useState(false);
 
   const handleLike = () => {
     const newLiked = !liked;
@@ -27,7 +29,8 @@ const Post = ({ post }) => {
   };
 
   const handleComment = () => {
-    navigation.navigate('post-detail',{post:post})
+    navigation.navigate("post-detail", { post: post });
+    // setShowComment(true);
   };
 
   const handleShare = () => {

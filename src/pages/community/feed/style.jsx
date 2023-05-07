@@ -107,14 +107,7 @@ const styles = StyleSheet.create({
   shareButtonText: {
     color: "#fff",
   },
-  commentSection: {
-    backgroundColor: "#f5f5f5",
-    padding: 10,
-    marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+ 
   reactionBtnStyle:{
     color:'#404040'
   }
