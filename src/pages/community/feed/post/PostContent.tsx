@@ -6,12 +6,16 @@ import { useEffect, useState } from "react";
 import AmityPostController from "../../../../controller/amity/amity_post_controller";
 import { getFile } from "@amityco/ts-sdk";
 import { getTimeDiffString } from "../../../../utils/utils";
-
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from "@react-navigation/native";
 type PostContentProps = {
-  post: Amity.Post;
+  post: Amity.Post,
+  showBackBtn?:boolean,
+
 };
 function PostContent(props: PostContentProps): JSX.Element {
   const { post } = props;
+  const showBackBtn=props.showBackBtn??false;
 
   const [images, setImages] = useState<string[]>([]);
 
@@ -50,11 +54,16 @@ function PostContent(props: PostContentProps): JSX.Element {
 
   const timeDiff = getTimeDiffString(post["createdAt"] ?? "");
   const {width}=Dimensions.get('screen');
+  const navigation=useNavigation();
   console.log(width);
   return (
     <>
+    <View>
+      {showBackBtn&& <IonIcon name="chevron-back" size={24} color='black' onPress={()=>navigation.goBack()} style={{marginBottom:8}}/>}
       <View style={styles.header}>
+
         <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+          
           <Avatar
             size={48}
             rounded
@@ -92,6 +101,7 @@ function PostContent(props: PostContentProps): JSX.Element {
             />
           );
         })}
+      </View>
       </View>
     </>
   );

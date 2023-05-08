@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 6,
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingTop: 8,
     backgroundColor: 'white'
   },
 
@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
   headerText: {
     flexDirection: "column",
     justifyContent: 'center',
-    marginBottom:16
+    marginLeft:8,
+    marginBottom:16,
   },
   mediaContainer:{
     // backgroundColor:'yellow',

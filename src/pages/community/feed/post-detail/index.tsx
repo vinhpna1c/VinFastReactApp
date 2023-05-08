@@ -8,10 +8,12 @@ import {
 } from "react-native";
 import PostContent from "../post/PostContent";
 import Post from "../post";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createComment, getComments, liveComments } from "@amityco/ts-sdk";
 import styles from "./styles";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import CommentComponent from "./CommentComponent";
+import Divider from "../../../product/components/Divider";
 type PostDetailProps = {
   post: Amity.Post;
 };
@@ -32,9 +34,12 @@ function PostDetail({ route }: { route: PostDetailRouteProps }): JSX.Element {
       referenceId: post.postId,
       referenceType: "post" as Amity.CommentReferenceType,
     };
+    addCommentRef.current?.clear();
+    addCommentRef.current?.blur();
 
     createComment(newComment);
   };
+  const addCommentRef = useRef<TextInput>(null);
   const disposers: Amity.Unsubscriber[] = [];
   const [commentData, setCommentData] =
     useState<Amity.LiveCollection<Amity.Comment>>();
@@ -44,7 +49,7 @@ function PostDetail({ route }: { route: PostDetailRouteProps }): JSX.Element {
       setComments(respond.data);
     });
   }, [post.postId]);
-  console.info(post.comments);
+  
   useEffect(() => {
     const commentUnscriber = liveComments(
       { referenceId: post.postId, referenceType: "post" },
@@ -58,27 +63,34 @@ function PostDetail({ route }: { route: PostDetailRouteProps }): JSX.Element {
       disposers.push(commentUnscriber);
     };
   }, [post.postId]);
-  console.debug(
-    "Current comment in post " + post.postId + ": " + commentData?.data
-  );
+ 
   return (
     <View style={styles.container}>
-      <Post post={post} />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <Post post={post}  showBackBtn={true}/>
+        <View style={{ height: 5, backgroundColor: '#EBECEF' }}></View>
         {comments.map((comment, index) => (
-          <Text key={index}>{JSON.stringify(comment.commentId)}</Text>
+          <CommentComponent key={index} comment={comment} />
         ))}
+        <View style={{ height: 50 }} />
+
       </ScrollView>
       <View style={styles.commentSection}>
+        <View style={styles.addComment}>
         <TextInput
+          ref={addCommentRef}
           placeholder="what think?"
           onChangeText={(value) => (myComment = value)}
-        ></TextInput>
+         / 
+        >  
+        </View>
+        
 
         <TouchableOpacity onPress={sendComment}>
           <MaterialIcons name="send" size={20}></MaterialIcons>
         </TouchableOpacity>
       </View>
+
     </View>
   );
 }

@@ -3,19 +3,31 @@ import { GestureResponderEvent, Text, TextInput, TouchableOpacity, View } from '
 import styles from "./styles";
 import { Avatar, Button } from "react-native-elements";
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native";
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MediaData, pickImages } from "../../../controller/images/image_picker";
 import MiniImagePicked from "../components/MiniImagePicked";
 import MiniVideoPicked from "../components/MiniVideoPicked";
+import { getActiveClient, getUser } from "@amityco/ts-sdk";
+import AmityPostController from "../../../controller/amity/amity_post_controller";
 
-
+const AVATAR_SIZE = 24;
 function CreatePostScreen(): JSX.Element {
     const [mediaDatas, setMediaDatas] = useState<MediaData[]>([]);
+
     const sheetRef = useRef<BottomSheet>(null);
     const navigation = useNavigation();
+    const activeClient = getActiveClient();
+    const [currentUser, setUser] = useState<Amity.User | undefined>(undefined);
+    let postText='';
+    useEffect(() => {
+        getUser(activeClient.userId ?? "").then((user) => {
+            setUser(user.data);
+        });
+    }, [])
     console.log(mediaDatas);
     return (
         <SafeAreaView style={styles.container}>
@@ -25,23 +37,45 @@ function CreatePostScreen(): JSX.Element {
 
                 </TouchableOpacity>
                 <Text>Tạo bài viết</Text>
-                <Text>Đăng</Text>
+                <TouchableOpacity onPress={()=>{
+                    console.info({
+                            textData:postText,
+                            targetType:'user',
+                        });
+                    AmityPostController.createPost({
+                        textData:postText,
+                        targetType:'user',
+                    }).then((post)=>{
+                        console.info("Success create post with id: "+post?.postId);
+                    });
+                }}>
+                    <Text>Đăng</Text>
+                </TouchableOpacity>
+
             </View>
 
             <View style={styles.userSection}>
-                <Avatar source={{ uri: 'https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.stickpng.com%2Fimg%2Ficons-logos-emojis%2Fusers%2Fsimple-user-icon&psig=AOvVaw1Uq2UC_4D_EIrUwzcVAzik&ust=1681808994946000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCMDWlPDIsP4CFQAAAAAdAAAAABAJ' }} />
-                <Text>Trí Nguyễn</Text>
+                {currentUser != undefined ?
+                    (currentUser.avatarCustomUrl == null ? (<Avatar rounded title={currentUser.displayName![0]} size={AVATAR_SIZE} />)
+                        : (<Avatar rounded source={{ uri: currentUser.avatarCustomUrl }} size={AVATAR_SIZE} titleStyle={{ color: 'white' }} />))
+                    : (<Avatar rounded size={AVATAR_SIZE} titleStyle={{ color: 'white' }} />)}
+                <Text>{currentUser != undefined && currentUser.displayName}</Text>
             </View>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <TextInput style={styles.textSection} multiline={true} placeholder="Bạn đang nghĩ gì?" />
+                <TextInput style={styles.textSection} multiline={true} placeholder="Bạn đang nghĩ gì?" onChangeText={(value)=>postText=value} />
                 <View style={styles.contentSection}>
                     {mediaDatas.filter((media) => media.mime.indexOf("image") >= 0).map((media, index) => {
+
                         return (
-                            <MiniImagePicked key={index} path={media.path} />
+                            <View>
+                                <IonIcon name="close-circle" />
+                                <MiniImagePicked key={index} path={media.path} />
+                            </View>
+
                         )
                     }
                     )}
-                     {mediaDatas.filter((media) => media.mime.indexOf("video") >= 0).map((media, index) => {
+                    {mediaDatas.filter((media) => media.mime.indexOf("video") >= 0).map((media, index) => {
                         return (
                             <MiniVideoPicked key={index} path={media.path} />
                         )
@@ -66,7 +100,7 @@ function CreatePostScreen(): JSX.Element {
                         onTap={async () => {
                             const dataPicked = await pickImages();
                             console.log(dataPicked);
-                            setMediaDatas(dataPicked);
+                            setMediaDatas([...mediaDatas, ...dataPicked]);
                         }}
                     />
                     <BottomOption title="Video trực tiếp" />

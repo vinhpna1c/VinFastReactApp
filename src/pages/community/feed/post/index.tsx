@@ -11,7 +11,13 @@ import { useNavigation } from "@react-navigation/native";
 import PostDetail from "../post-detail";
 import  BottomSheet  from '@gorhom/bottom-sheet';
 
-const Post = ({ post }) => {
+type PostProps={
+  post:Amity.Post,
+  showBackBtn?:boolean,
+}
+
+const Post = (props:PostProps) => {
+  const {post}=props;
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false);
   const [commented, setCommented] = useState(false);
@@ -41,7 +47,8 @@ const Post = ({ post }) => {
 
   return (
     <View style={styles.container}>
-      <PostContent post={post} />
+      <PostContent post={post}  showBackBtn={props.showBackBtn}/>
+      <View style={{height:1,backgroundColor:'#ebedee',marginTop:4}}/>
       <View style={styles.actions}>
         {/* React  */}
         <TouchableOpacity onPress={handleLike}>
@@ -59,6 +66,7 @@ const Post = ({ post }) => {
             name="chatbubble-ellipses-outline"
             size={24}
             style={styles.reactionBtnStyle}
+            
           />
         </TouchableOpacity>
         <Text style={styles.actionCount}>{post.commentsCount}</Text>
@@ -71,8 +79,9 @@ const Post = ({ post }) => {
             style={styles.reactionBtnStyle}
           />
         </TouchableOpacity>
-        <Text style={styles.actionCount}>{post.sharedCount}</Text>
+        <Text style={styles.actionCount}>0</Text>
       </View>
+      {/* <View style={{height:1,backgroundColor:'#ebedee'}}/> */}
     </View>
   );
 };
