@@ -17,7 +17,7 @@ import { useState } from "react";
 import vehicles from "./mock_data";
 import Divider from "./components/Divider";
 import { useNavigation, useRoute } from "@react-navigation/native";
-export default function ProductScreen() {
+export default function  nProductScreen() {
   const route = useRoute();
   const navigation = useNavigation();
   console.log(route.name);

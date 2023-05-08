@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   mediaContainer:{
     // backgroundColor:'yellow',
     width:'100%',
+    justifyContent:'space-between',
     flexDirection:'row',
     flexWrap:'wrap',
   },
@@ -54,16 +55,19 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   topImageContent:{
-    width:'100%',
+    
+    
     height:300,
     marginBottom:4,
-    resizeMode:'cover'
+    resizeMode:'cover',
+    
   },
   otherImageContent:{
-  
-    flex:1,
+      flex:1,
     marginRight:2,
     height:100,
+    
+    
   
   },
   content: {
@@ -103,14 +107,7 @@ const styles = StyleSheet.create({
   shareButtonText: {
     color: "#fff",
   },
-  commentSection: {
-    backgroundColor: "#f5f5f5",
-    padding: 10,
-    marginTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+ 
   reactionBtnStyle:{
     color:'#404040'
   }

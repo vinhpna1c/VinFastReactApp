@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useState, useEffect, useContext, useCallback } from "react";
 import { runQuery, createQuery, queryGlobalFeed } from "@amityco/ts-sdk";
-import Post from "./feed/Post";
+import Post from './feed/post';
 import { Avatar, Button, Divider } from "@rneui/themed";
 
 import styles from "./style";
@@ -268,8 +268,12 @@ function CommunityScreen() {
               }
               return true;
             })
-            .map((post) => (
-              <Post key={post["_id"] ?? Date.now().toString} post={post} />
+            .map((post,index) => (
+             
+                <Post key={index}  post={post} />
+         
+
+              
             ))}
 
             
