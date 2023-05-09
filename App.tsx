@@ -33,7 +33,7 @@ import {
 } from "@react-navigation/native";
 
 import AppNavigator from "./src/controller/navigator/AppNavigator";
-import { API_REGIONS, createClient, enableCache } from '@amityco/ts-sdk';
+import { API_REGIONS, Client,  enableCache } from '@amityco/ts-sdk';
 import AmityStore from "./src/stores/amity/AmityStore";
 import RootStore from "./src/stores";
 import { observe } from "mobx";
@@ -43,42 +43,12 @@ export function initAmity() {
 
   const apiKey = 'b0e8e90b6edfa56018638c490300428a820cdde1ba363c7e';
 
-  const client = createClient(apiKey, API_REGIONS.SG);
+  const client =Client. createClient(apiKey, API_REGIONS.SG);
 
 
   enableCache();
   return client;
 }
-
-function Section({ children, title }) {
-
-  const isDarkMode = useColorScheme() === "dark";
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}
-      >
-        {children}
-      </Text>
-    </View>
-  );
-}
-
 function App() {
   
   const rootStore=new RootStore();

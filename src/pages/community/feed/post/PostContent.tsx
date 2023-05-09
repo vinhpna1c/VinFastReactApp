@@ -4,10 +4,11 @@ import { Avatar, Image } from "@rneui/themed";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
 import AmityPostController from "../../../../controller/amity/amity_post_controller";
-import { getFile } from "@amityco/ts-sdk";
+
 import { getTimeDiffString } from "../../../../utils/utils";
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
+import { FileRepository } from "@amityco/ts-sdk";
 type PostContentProps = {
   post: Amity.Post,
   showBackBtn?:boolean,
@@ -35,13 +36,13 @@ function PostContent(props: PostContentProps): JSX.Element {
         //handle types of post here
 
         if (p.dataType === "image") {
-          const url = (await getFile((p.data as Amity.ContentDataFile)?.fileId))
+          const url = (await FileRepository.getFile((p.data as Amity.ContentDataFile)?.fileId))
             .data.fileUrl;
           //add large for render
           links.push(url + "?size=large");
         } else if (p.dataType === "video") {
           // console.log(p);
-          const videoFile = await getFile(
+          const videoFile = await FileRepository.getFile(
             (p.data as Amity.ContentDataVideo)?.videoFileId?.original ?? ""
           );
           // console.log(videoFile.data.fileUrl);

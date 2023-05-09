@@ -1,8 +1,9 @@
-import { MessageContentType, createMessage, createQuery, getActiveClient, getChannel, liveMessages, queryChannels, queryMessages, runQuery } from "@amityco/ts-sdk";
+import { ChannelRepository, MessageContentType,MessageRepository,  createQuery,  runQuery } from "@amityco/ts-sdk";
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import RootStore from "../../stores";
 import { channel } from "expo-updates";
+import { getChannel } from "@amityco/ts-sdk/dist/channelRepsitory";
 
 
 
@@ -13,12 +14,14 @@ const getAllChannel = () => {
   //
 }
 const getChannelByID = async (channelID: string) => {
-  const channel = await getChannel(channelID);
+  const channel = await ChannelRepository.getChannel(channelID,(channel)=>{
+
+  });
 
 }
 const getMessagesInChannel = async (channelID: string) => {
   console.log("call query channel: " + channelID)
-  console.log("Message query: " + JSON.stringify((await queryMessages({ subChannelId: channelID, includeDeleted: false, })).data.length));
+  // console.log("Message query: " + JSON.stringify((await MessageRepository queryMessages({ subChannelId: channelID, includeDeleted: false, })).data.length));
 }
 
 type MessageForm = {
@@ -47,7 +50,7 @@ const createMsg = async (data: { channel: Amity.Channel, msgData: MessageForm })
   };
   console.log(JSON.stringify(sendMsg))
 
-  const { data: msg } = await createMessage(sendMsg);
+  const { data: msg } = await MessageRepository.createMessage(sendMsg);
 
   console.log("Message sent: " + JSON.stringify(msg))
 

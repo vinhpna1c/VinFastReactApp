@@ -12,7 +12,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { useState, useEffect, useContext, useCallback } from "react";
-import { runQuery, createQuery, queryGlobalFeed } from "@amityco/ts-sdk";
+import { runQuery, createQuery,  FeedRepository } from "@amityco/ts-sdk";
 import Post from './feed/post';
 import { Avatar, Button, Divider } from "@rneui/themed";
 
@@ -43,18 +43,11 @@ function CommunityScreen() {
     MobXProviderContext
   ) as RootStore;
   const navigation = useNavigation();
-  const getGlobalFeed = () => {
-    const query = createQuery(queryGlobalFeed);
-    runQuery(query, ({ data: postList, ...options }) => {
-      
-      if (typeof postList !== "undefined") {
-        // setPosts(postList);
-      
-        amityFeedStore.posts = [...postList];
-      } else {
-        amityFeedStore.posts = [];
-      }
-    });
+  const getGlobalFeed =async () => {
+    const {data:posts}=await FeedRepository.queryGlobalFeed();
+    console.debug("Post get: "+posts.length)
+    amityFeedStore.posts=[...posts];
+  
   };
 
   useEffect(() => {
@@ -253,7 +246,7 @@ function CommunityScreen() {
               .filter(
                 (post) =>
                   post["dataType"] === "text" &&
-                  post["data"]["text"] === "##REEL##"
+                  ((post["data"] as Amity.ContentDataText)["text"] )=== "##REEL##"
               )
               .map((p, index) => {
                 return <MiniReel key={index.toString()} post={p} />;
@@ -262,7 +255,7 @@ function CommunityScreen() {
           {amityFeedStore.posts
             .filter((p, index) => {
               if (p["dataType"] === "text") {
-                if (p["data"]["text"] === "##REEL##") {
+                if (((p["data"] as Amity.ContentDataText)["text"] ) === "##REEL##") {
                   return false;
                 }
               }

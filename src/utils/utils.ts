@@ -1,4 +1,4 @@
-import { getFile } from "@amityco/ts-sdk";
+import { FileRepository } from "@amityco/ts-sdk";
 
 export function getTimeDiffString(postTime: number | string): string {
   // Convert the post time to a Date object
@@ -39,7 +39,7 @@ export function parseDateFromString(dateStr: string): Date {
 export async function getUrlFromFileId(fileID: string): Promise<string> {
 
   try {
-    const file = await getFile(fileID);  
+    const file = await FileRepository.getFile(fileID);  
     return file.data.fileUrl ?? "";
   } catch (error) {
     console.error("Error while get file");
@@ -49,11 +49,16 @@ export async function getUrlFromFileId(fileID: string): Promise<string> {
 }
 export const uriToBlob = async (uri: string): Promise<Blob> => {
   console.log(uri)
+  
   const response = await fetch(uri.replace("file:///","file:/"));
   const blob = await response.blob();
 
   return blob;
 };
+
+export const handleStringArrFromObject=(arr:string[] )=>{
+  return arr.toString().split(',');
+}
 
 
 

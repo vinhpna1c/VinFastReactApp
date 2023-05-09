@@ -13,21 +13,54 @@ import MiniImagePicked from "../components/MiniImagePicked";
 import MiniVideoPicked from "../components/MiniVideoPicked";
 import { getActiveClient, getUser } from "@amityco/ts-sdk";
 import AmityPostController from "../../../controller/amity/amity_post_controller";
+import DropDownPicker from "react-native-dropdown-picker";
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const AVATAR_SIZE = 24;
 function CreatePostScreen(): JSX.Element {
     const [mediaDatas, setMediaDatas] = useState<MediaData[]>([]);
 
+    //handle dropdown
+    // const [open, setOpen] = useState(false);
+    
+    // const [targetOption, setTargetOption] = useState([
+    //     { label: 'Private', value: 'apple', icon:(()=><MaterialIcon name="public"/>)},
+    //     { label: 'Public', value: 'banana', icon:(()=><MaterialIcon name="lock"/>) }
+       
+    // ]);
+    // const [postTarget, setPostTarget] = useState(targetOption[1]);
     const sheetRef = useRef<BottomSheet>(null);
     const navigation = useNavigation();
     const activeClient = getActiveClient();
     const [currentUser, setUser] = useState<Amity.User | undefined>(undefined);
-    let postText='';
+    let postText = '';
     useEffect(() => {
         getUser(activeClient.userId ?? "").then((user) => {
             setUser(user.data);
         });
     }, [])
+
+    const createNewPost = () => {
+        //check data send to amity
+        const images=mediaDatas.filter((media)=>media.mime.indexOf('image')>=0).map((image=>image.path));
+        const videos=mediaDatas.filter((media)=>media.mime.indexOf('video')>=0).map((video=>video.path));
+       
+        const newPostData={
+            textData: postText,
+            targetType: 'user',
+            images:images,
+            // videos:videos,
+        };
+        console.info(newPostData);
+        
+        //send data to amity
+
+        AmityPostController.createPost(newPostData).then((post) => {
+            console.info("Success create post with id: " + post?.postId);
+        });
+        //back to other screen
+        // navigation.goBack();
+    }
     console.log(mediaDatas);
     return (
         <SafeAreaView style={styles.container}>
@@ -37,18 +70,7 @@ function CreatePostScreen(): JSX.Element {
 
                 </TouchableOpacity>
                 <Text>Tạo bài viết</Text>
-                <TouchableOpacity onPress={()=>{
-                    console.info({
-                            textData:postText,
-                            targetType:'user',
-                        });
-                    AmityPostController.createPost({
-                        textData:postText,
-                        targetType:'user',
-                    }).then((post)=>{
-                        console.info("Success create post with id: "+post?.postId);
-                    });
-                }}>
+                <TouchableOpacity onPress={createNewPost}>
                     <Text>Đăng</Text>
                 </TouchableOpacity>
 
@@ -61,8 +83,29 @@ function CreatePostScreen(): JSX.Element {
                     : (<Avatar rounded size={AVATAR_SIZE} titleStyle={{ color: 'white' }} />)}
                 <Text>{currentUser != undefined && currentUser.displayName}</Text>
             </View>
+            <View>
+                {/* <DropDownPicker
+                placeholder="Option"
+                
+                    open={open}
+                    value={postTarget}
+                    items={targetOption}
+                    setOpen={setOpen}
+                    setValue={setPostTarget}
+                    setItems={setTargetOption}
+                    style={{
+                        borderRadius: 0,
+                        borderColor: '#9e9e9e',
+                        width: 150,
+                        height: 40,
+                    }}
+                    dropDownContainerStyle={{
+                        width: 150
+                    }}
+                /> */}
+            </View>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <TextInput style={styles.textSection} multiline={true} placeholder="Bạn đang nghĩ gì?" onChangeText={(value)=>postText=value} />
+                <TextInput style={styles.textSection} multiline={true} placeholder="Bạn đang nghĩ gì?" onChangeText={(value) => postText = value} />
                 <View style={styles.contentSection}>
                     {mediaDatas.filter((media) => media.mime.indexOf("image") >= 0).map((media, index) => {
 
@@ -98,7 +141,7 @@ function CreatePostScreen(): JSX.Element {
                 <BottomSheetView>
                     <BottomOption title="Thêm hình ảnh/ video"
                         onTap={async () => {
-                            const dataPicked = await pickImages();
+                            const dataPicked = await pickImages({mediaType:'any'});
                             console.log(dataPicked);
                             setMediaDatas([...mediaDatas, ...dataPicked]);
                         }}

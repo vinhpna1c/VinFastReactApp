@@ -1,5 +1,5 @@
 import { makeObservable, observable, action } from 'mobx';
-import { connectClient, getFile, getUser, } from "@amityco/ts-sdk";
+import { Client, FileRepository, UserRepository } from "@amityco/ts-sdk";
 import { initAmity } from '../../../App';
 import AmityPostController from '../../controller/amity/amity_post_controller';
 class AmityStore {
@@ -52,13 +52,14 @@ class AmityStore {
 
         const handleConnect = async (userId: string, displayName: string) => {
 
-            const result = await connectClient({ userId, displayName }, sessionHandler);
+            const result = await Client.login({ userId, displayName }, sessionHandler);
 
             console.log("Is login: " + result);
             if (result) {
                 console.info("LOG IN SUCCESSFULLY WITH ACCOUNT " + username)
                 this.currentuserID = username;
-                this.currentUser = (await getUser(username)).data;
+                
+                // this.currentUser = UserRepository.getUser()
                 console.info('Current user data: ' + JSON.stringify(this.currentUser))
             }
 
@@ -70,7 +71,7 @@ class AmityStore {
             const controller = new AmityPostController();
             // controller.queryPost();
             // AmityPostController.getPostById("642bc44c689988235717eb7e").then(post=>console.log(post));
-            getFile("642bc4466f323b01dd6d7765").then((value) => console.log(value.data.fileUrl))
+           FileRepository. getFile("642bc4466f323b01dd6d7765").then((value) => console.log(value.data.fileUrl))
 
         });
 
@@ -78,4 +79,8 @@ class AmityStore {
 }
 
 export default AmityStore;
+
+function connectClient(arg0: { userId: string; displayName: string; }, sessionHandler: Amity.SessionHandler) {
+    throw new Error('Function not implemented.');
+}
 

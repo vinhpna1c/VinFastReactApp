@@ -1,6 +1,6 @@
 import { createQuery, runQuery, queryPosts, getPost, queryGlobalFeed, getFile, getUser, PostContentType, getActiveClient, createPost, createImage, createVideo } from '@amityco/ts-sdk';
 import AmityFeedStore from '../../stores/feed/AmityFeedStore';
-import { uriToBlob } from '../../utils/utils';
+import { handleStringArrFromObject, uriToBlob } from '../../utils/utils';
 
 export type PostHandleData = {
   id: string,
@@ -80,31 +80,33 @@ class AmityPostController {
 
   static createBlobFormData = async (filePaths: string[]) => {
     const formData = new FormData();
-    if(filePaths.length==0)
-    {
+    if (filePaths.length == 0) {
       return undefined;
     }
-    for (const filePath in filePaths) {
-      formData.append('files', await uriToBlob(filePath))
-    }
-    console.log("Form data:"+JSON.stringify(formData))
-    
+    const paths=handleStringArrFromObject(filePaths);
+    console.log(filePaths.length);
+    // for(let i =0; i<filePaths.length;i++){
+      
+    // }
+    formData.append("files",filePaths[0]);
+    console.log("Form data:" + JSON.stringify(formData))
+
     return formData;
   }
 
   static uploadImagesToAmity = async (filePaths: string[]) => {
+
     const imageBlobs = await this.createBlobFormData(filePaths);
-    if(imageBlobs==undefined)
-    {
+    if (imageBlobs == undefined) {
       return [];
     }
-    var respond = await createImage(imageBlobs);
+    console.info("Blobs" + JSON.stringify(imageBlobs));
+    var respond = await createImage(imageBlobs,);
     return respond.data;
   }
   static uploadVideosToAmity = async (filePaths: string[]) => {
     const videoBlobs = await this.createBlobFormData(filePaths);
-    if(videoBlobs==undefined)
-    {
+    if (videoBlobs == undefined) {
       return [];
     }
     var respond = await createVideo(videoBlobs);
@@ -112,8 +114,7 @@ class AmityPostController {
   }
   static uploadFilesToAmity = async (filePaths: string[]) => {
     const fileBlobs = await this.createBlobFormData(filePaths);
-    if(fileBlobs==undefined)
-    {
+    if (fileBlobs == undefined) {
       return [];
     }
     var respond = await createImage(fileBlobs);
@@ -129,11 +130,16 @@ class AmityPostController {
     videos?: string[],
   }) => {
 
+
+
     const currentClient = getActiveClient();
+    const images = handleStringArrFromObject((options['images'] ?? []) as string[]);
+    console.info(images)
 
 
-    const imageUploaded = await this.uploadFilesToAmity(options.images ?? []);
-    const videoUploaded = await this.uploadFilesToAmity(options.videos ?? []);
+
+    const imageUploaded = await this.uploadImagesToAmity(options.images ?? []);
+    const videoUploaded = await this.uploadVideosToAmity(options.videos ?? []);
     const fileUploaded = await this.uploadFilesToAmity(options.files ?? []);
     const newPost = {
 
@@ -149,8 +155,8 @@ class AmityPostController {
       targetId: currentClient.userId ?? "",
     }
     try {
-      const respond = await createPost(newPost);
-      return respond.data;
+      // const respond = await createPost(newPost);
+      // return respond.data;
     } catch (error) {
       console.error("Error create post")
     }
