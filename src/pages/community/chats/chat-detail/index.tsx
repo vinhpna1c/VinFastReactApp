@@ -11,9 +11,11 @@ import { MobXProviderContext } from "mobx-react";
 import RootStore from "../../../../stores";
 import { getUrlFromFileId, uriToBlob } from "../../../../utils/utils";
 import styles from "./styles";
-import { createImage, liveMessages } from "@amityco/ts-sdk";
+
 import { MediaData, pickImages } from "../../../../controller/images/image_picker";
 import MiniImagePicked from "../../components/MiniImagePicked";
+import { FileRepository, MessageRepository, UserRepository, getChannelTopic, subscribeTopic } from "@amityco/ts-sdk";
+import disposers from "../../../../controller/amity/amity_subscribe_controller";
 
 
 
@@ -27,7 +29,7 @@ function ChatDetailScreen({ route }: { route: ChatDetailRouteProps }): JSX.Eleme
   const params = route.params as ChatDetailProps;
   const navigation = useNavigation();
   const channel = params.channelDetail;
-  
+
   //handle mobx
   const { amityStore } = useContext(MobXProviderContext) as RootStore;
   //handle send message  
@@ -57,16 +59,33 @@ function ChatDetailScreen({ route }: { route: ChatDetailRouteProps }): JSX.Eleme
 
 
   //handle amity live message
-  const [msgData, setMessageData] = useState<Amity.LiveCollection<Amity.Message>>();
-  const { data: messagess = [], onNextPage, hasNextPage, loading, error } = msgData ?? {};
-  useEffect(() => liveMessages({ subChannelId: channel.defaultSubChannelId, includeDeleted: false, limit: 20 }, (respond) => {
-    setMessageData(respond);
+  const [messages, setMessages] = useState<Amity.Message[]>();
 
-  },), [channel.defaultSubChannelId]);
-  const messageList = msgData?.data.reverse() ?? [];
+  useEffect(() => {
+    const unsubscribe = MessageRepository.getMessages(
+      { subChannelId: channel.defaultSubChannelId },
+      ({ data, onNextPage, hasNextPage, loading, error }) => {
+        setMessages(data);
+        /*
+         * this is only required if you want real time updates for messages
+         * in the collection
+         *
+         */
+        const channelUnsub=subscribeTopic(getChannelTopic(channel));
+        disposers.push(channelUnsub);
+      },
+    );
 
-  console.info("Current message count: " + messageList.length);
+    disposers.push(unsubscribe);
+
+    return ()=>{
+      unsubscribe();
+    }
+  }, [])
+
+
   return (
+    
     <View style={styles.container}>
       <View style={styles.headerSection}>
 
@@ -83,15 +102,15 @@ function ChatDetailScreen({ route }: { route: ChatDetailRouteProps }): JSX.Eleme
         onContentSizeChange={() =>
           scrollRef.current?.scrollToEnd({ animated: true })
         }>
-        {messageList.map((msg) => <MessageRow key={msg.messageId} message={msg} currentUserId={amityStore.currentuserID} />)}
+        {messages?.map((msg) => <MessageRow key={msg.messageId} message={msg} currentUserId={amityStore.currentuserID} />)}
         <View style={{ height: 20 }}></View>
       </ScrollView>
       <View style={styles.inputContainer}>
 
         <EntypoIcon name='folder-images' size={24} color='grey' style={styles.iconButton} onPress={async () => {
           const pickedImages = await pickImages({ mediaType: 'photo' });
-          
-          
+
+
           setPickedMedia(pickedImages);
           setModalVisible(true);
 
@@ -118,29 +137,28 @@ function ChatDetailScreen({ route }: { route: ChatDetailRouteProps }): JSX.Eleme
 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                 <Button title='Cancel' onPress={() => setModalVisible(false)} />
-                
-                <Button title='Send' onPress={() =>{
-                 
+
+                <Button title='Send' onPress={() => {
+
                   // pickedMedia.map(e=>imagesData.append('files',new File( e.path)))
-                  
-                  const uploadImage=async()=>{
-                    const imagesData=new FormData();
-                   for (const file in pickedMedia)
-                   {
-                     imagesData.append('files',await uriToBlob(file))
-                   }
-                    console.info("Form data: "+JSON.stringify(imagesData))
-                    createImage(imagesData).then((value)=>{
-                    console.log("File url receive: "+value.data[0].fileUrl)
-                    
-                  })
+
+                  const uploadImage = async () => {
+                    const imagesData = new FormData();
+                    for (const file in pickedMedia) {
+                      imagesData.append('files', await uriToBlob(file))
+                    }
+                    console.info("Form data: " + JSON.stringify(imagesData))
+                    FileRepository.createImage(imagesData).then((value) => {
+                      console.log("File url receive: " + value.data[0].fileUrl)
+
+                    })
                   }
                   uploadImage()
                   // createMsg({channel:channel,msgData:{
-                    
+
                   // }})
-                   setModalVisible(false)
-                   }} />
+                  setModalVisible(false)
+                }} />
               </View>
             </View>
 

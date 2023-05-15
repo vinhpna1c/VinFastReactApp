@@ -1,6 +1,6 @@
-import { createQuery, runQuery, queryPosts, getPost, queryGlobalFeed, getFile, getUser, PostContentType, getActiveClient, createPost, createImage, createVideo } from '@amityco/ts-sdk';
+import { createQuery, runQuery,  PostContentType, PostRepository, UserRepository, FileRepository, Client } from '@amityco/ts-sdk';
 import AmityFeedStore from '../../stores/feed/AmityFeedStore';
-import { handleStringArrFromObject, uriToBlob } from '../../utils/utils';
+import { getUrlFromFileId, handleStringArrFromObject, uriToBlob } from '../../utils/utils';
 
 export type PostHandleData = {
   id: string,
@@ -20,13 +20,13 @@ enum FileTypes {
 class AmityPostController {
   constructor() { }
   queryPost = (): void => {
-    const query = createQuery(queryPosts, {
-      targetType: 'community',
-      targetId: '6421189a26c865bf2b479299',
-      feedType: 'published',
-    });
+    // const query = createQuery(queryPosts, {
+    //   targetType: 'community',
+    //   targetId: '6421189a26c865bf2b479299',
+    //   feedType: 'published',
+    // });
 
-    runQuery(query, ({ data: posts, ...options }) => console.log(posts, options));
+    // runQuery(query, ({ data: posts, ...options }) => console.log(posts, options));
   }
 
   queryGlobalFeed(postList: Amity.Post[]) {
@@ -36,8 +36,8 @@ class AmityPostController {
   }
 
   static getPostById = async (postID: string): Promise<Amity.Post<any>> => {
-
-    return (await getPost(postID)).data;
+     const posts=await  PostRepository.getPostByIds([postID]);
+    return posts.data[0];
   }
 
   getPosts(): void {
@@ -45,7 +45,7 @@ class AmityPostController {
   }
 
   getUserByID = async (userId: string): Promise<Amity.User> => {
-    return (await getUser(userId)).data;
+    return ((await  UserRepository.getUserByIds([userId]))?.data[0]);
   }
 
   static getDataFromPost = async (postID: string): Promise<PostHandleData> => {
@@ -56,14 +56,14 @@ class AmityPostController {
     //handle types of post here
 
     if (p.dataType === 'image') {
-      const imageFile = (await getFile((p.data as Amity.ContentDataImage).fileId)).data;
+      const imageFile = (await FileRepository.getFile((p.data as Amity.ContentDataImage).fileId)).data;
       metaData = imageFile.attributes.metadata;
       url = imageFile.fileUrl;
 
     }
     else if (p.dataType === 'video') {
 
-      const videoFile = await getFile((p.data as Amity.ContentDataVideo).videoFileId.original ?? "");
+      const videoFile = await FileRepository. getFile((p.data as Amity.ContentDataVideo).videoFileId.original ?? "");
       metaData = videoFile.data.attributes.metadata;
       url = videoFile.data.fileUrl;
     }
@@ -88,28 +88,38 @@ class AmityPostController {
     // for(let i =0; i<filePaths.length;i++){
       
     // }
-    formData.append("files",filePaths[0]);
+    console.log("File path: "+filePaths[0])
+    const blobUrl= await uriToBlob(filePaths[0]);
+    console.log("Blob url: "+JSON.stringify(blobUrl))
+    formData.append("files",blobUrl);
     console.log("Form data:" + JSON.stringify(formData))
 
     return formData;
   }
 
+
+
   static uploadImagesToAmity = async (filePaths: string[]) => {
 
     const imageBlobs = await this.createBlobFormData(filePaths);
+    console.info("Create Image Blob ")
     if (imageBlobs == undefined) {
       return [];
     }
-    console.info("Blobs" + JSON.stringify(imageBlobs));
-    var respond = await createImage(imageBlobs,);
-    return respond.data;
+    console.info("Image Blobs: " + JSON.stringify(imageBlobs));
+    const query= createQuery(FileRepository.createImage,imageBlobs);
+    runQuery(query,(respond)=>{
+     console.log("Image get: "+JSON.stringify(respond))
+    })
+    // var respond = await FileRepository. createImage(imageBlobs,);
+    return {};
   }
   static uploadVideosToAmity = async (filePaths: string[]) => {
     const videoBlobs = await this.createBlobFormData(filePaths);
     if (videoBlobs == undefined) {
       return [];
     }
-    var respond = await createVideo(videoBlobs);
+    var respond = await FileRepository. createVideo(videoBlobs);
     return respond.data;
   }
   static uploadFilesToAmity = async (filePaths: string[]) => {
@@ -117,7 +127,13 @@ class AmityPostController {
     if (fileBlobs == undefined) {
       return [];
     }
-    var respond = await createImage(fileBlobs);
+
+    
+   const query= createQuery(FileRepository.createImage,fileBlobs);
+   runQuery(query,(respond)=>{
+    console.log("Image get: "+respond.data)
+   })
+    var respond = await FileRepository.createImage(fileBlobs);
     return respond.data;
   }
 
@@ -132,9 +148,9 @@ class AmityPostController {
 
 
 
-    const currentClient = getActiveClient();
+    const currentClient = Client.getActiveClient();
     const images = handleStringArrFromObject((options['images'] ?? []) as string[]);
-    console.info(images)
+    console.info("Images: "+images)
 
 
 
@@ -147,9 +163,9 @@ class AmityPostController {
         text: options.textData
       },
       attachments: [
-        ...imageUploaded.map((image) => { return { type: PostContentType.IMAGE, fileId: image.fileId } }),
-        ...videoUploaded.map((video) => { return { type: PostContentType.VIDEO, fileId: video.fileId } }),
-        ...fileUploaded.map((file) => { return { type: PostContentType.FILE, fileId: file.fileId } }),
+        // ...imageUploaded.map((image) => { return { type: PostContentType.IMAGE, fileId: image.fileId } }),
+        // ...videoUploaded.map((video) => { return { type: PostContentType.VIDEO, fileId: video.fileId } }),
+        // ...fileUploaded.map((file) => { return { type: PostContentType.FILE, fileId: file.fileId } }),
       ],
       targetType: options.targetType,
       targetId: currentClient.userId ?? "",

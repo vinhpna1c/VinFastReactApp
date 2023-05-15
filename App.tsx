@@ -6,8 +6,8 @@
  */
 
 import React, { createContext } from "react";
-import 'core-js/features/object/from-entries';
-import { Provider,inject,observer } from 'mobx-react';
+
+import { Provider, inject, observer } from 'mobx-react';
 import {
   Button,
   SafeAreaView,
@@ -33,7 +33,7 @@ import {
 } from "@react-navigation/native";
 
 import AppNavigator from "./src/controller/navigator/AppNavigator";
-import { API_REGIONS, Client,  enableCache } from '@amityco/ts-sdk';
+import { API_REGIONS, Client, enableCache } from '@amityco/ts-sdk';
 import AmityStore from "./src/stores/amity/AmityStore";
 import RootStore from "./src/stores";
 import { observe } from "mobx";
@@ -43,26 +43,20 @@ export function initAmity() {
 
   const apiKey = 'b0e8e90b6edfa56018638c490300428a820cdde1ba363c7e';
 
-  const client =Client. createClient(apiKey, API_REGIONS.SG);
+  const client = Client.createClient(apiKey, API_REGIONS.SG);
 
 
   enableCache();
   return client;
 }
 function App() {
-  
-  const rootStore=new RootStore();
-  
-  
-    
-  return (  
-<Provider {...rootStore}>
-
-
+  const rootStore = new RootStore();
+  return (
+    <Provider {...rootStore}>
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
-      </Provider>   
+    </Provider>
   );
 }
 

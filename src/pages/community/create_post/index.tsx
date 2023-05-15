@@ -11,10 +11,41 @@ import { useEffect, useRef, useState } from "react";
 import { MediaData, pickImages } from "../../../controller/images/image_picker";
 import MiniImagePicked from "../components/MiniImagePicked";
 import MiniVideoPicked from "../components/MiniVideoPicked";
-import { getActiveClient, getUser } from "@amityco/ts-sdk";
+import { Client, FileRepository, UserRepository, createQuery, runQuery } from "@amityco/ts-sdk";
 import AmityPostController from "../../../controller/amity/amity_post_controller";
 import DropDownPicker from "react-native-dropdown-picker";
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { uriToBlob } from "../../../utils/utils";
+
+const sendTestImage=async()=>{
+    const filePath="file:///data/user/0/com.innovation.vinfast.demo/cache/react-native-image-crop-picker/IMG_20230127_170553.jpg";
+    console.log("file path "+filePath)
+    const blob=await uriToBlob(filePath);
+    console.info("Blob name: "+blob.name);
+    const data=new FormData();
+
+    console.info("Set up here");
+    
+    const file=new File([blob],"FB_IMG_1675552673416.jpg",{type:blob.type});
+    data.append("files",file);
+    console.info("Data: "+JSON.stringify(data));
+    try{
+        FileRepository.createImage(data).then((response)=>{
+            console.info("Respond: "+JSON.stringify(response))
+        })
+    }
+    catch (e)
+    {
+            console.info("Error create image")
+            console.error(e);
+    }
+  
+    // const query=createQuery(FileRepository.createImage,data,);
+    // runQuery(query,(response)=>{
+    //     console.info("Respond: "+JSON.stringify(response))
+     
+    // })
+}
 
 const AVATAR_SIZE = 24;
 function CreatePostScreen(): JSX.Element {
@@ -22,41 +53,41 @@ function CreatePostScreen(): JSX.Element {
 
     //handle dropdown
     // const [open, setOpen] = useState(false);
-    
+
     // const [targetOption, setTargetOption] = useState([
     //     { label: 'Private', value: 'apple', icon:(()=><MaterialIcon name="public"/>)},
     //     { label: 'Public', value: 'banana', icon:(()=><MaterialIcon name="lock"/>) }
-       
+
     // ]);
     // const [postTarget, setPostTarget] = useState(targetOption[1]);
     const sheetRef = useRef<BottomSheet>(null);
     const navigation = useNavigation();
-    const activeClient = getActiveClient();
+    const activeClient = Client.getActiveClient();
     const [currentUser, setUser] = useState<Amity.User | undefined>(undefined);
     let postText = '';
     useEffect(() => {
-        getUser(activeClient.userId ?? "").then((user) => {
-            setUser(user.data);
+        UserRepository.getUserByIds([activeClient.userId ?? ""]).then((user) => {
+            setUser(user?.data[0]);
         });
     }, [])
 
     const createNewPost = () => {
         //check data send to amity
-        const images=mediaDatas.filter((media)=>media.mime.indexOf('image')>=0).map((image=>image.path));
-        const videos=mediaDatas.filter((media)=>media.mime.indexOf('video')>=0).map((video=>video.path));
-       
-        const newPostData={
+        const images = mediaDatas.filter((media) => media.mime.indexOf('image') >= 0).map((image => image.path));
+        const videos = mediaDatas.filter((media) => media.mime.indexOf('video') >= 0).map((video => video.path));
+
+        const newPostData = {
             textData: postText,
             targetType: 'user',
-            images:images,
+            images: images,
             // videos:videos,
         };
         console.info(newPostData);
-        
+
         //send data to amity
 
         AmityPostController.createPost(newPostData).then((post) => {
-            console.info("Success create post with id: " + post?.postId);
+            // console.info("Success create post with id: " + post?.postId);
         });
         //back to other screen
         // navigation.goBack();
@@ -70,7 +101,7 @@ function CreatePostScreen(): JSX.Element {
 
                 </TouchableOpacity>
                 <Text>Tạo bài viết</Text>
-                <TouchableOpacity onPress={createNewPost}>
+                <TouchableOpacity onPress={()=>{createNewPost}}>
                     <Text>Đăng</Text>
                 </TouchableOpacity>
 
@@ -83,6 +114,11 @@ function CreatePostScreen(): JSX.Element {
                     : (<Avatar rounded size={AVATAR_SIZE} titleStyle={{ color: 'white' }} />)}
                 <Text>{currentUser != undefined && currentUser.displayName}</Text>
             </View>
+            <Button title={"Send test image"} onPress={async()=>{
+                console.info("CALL TEST FUNCTION")
+                await sendTestImage()
+                console.info("Done calll test function")
+                }}/>
             <View>
                 {/* <DropDownPicker
                 placeholder="Option"
@@ -110,7 +146,7 @@ function CreatePostScreen(): JSX.Element {
                     {mediaDatas.filter((media) => media.mime.indexOf("image") >= 0).map((media, index) => {
 
                         return (
-                            <View>
+                            <View key={index}>
                                 <IonIcon name="close-circle" />
                                 <MiniImagePicked key={index} path={media.path} />
                             </View>
@@ -119,6 +155,7 @@ function CreatePostScreen(): JSX.Element {
                     }
                     )}
                     {mediaDatas.filter((media) => media.mime.indexOf("video") >= 0).map((media, index) => {
+                        c
                         return (
                             <MiniVideoPicked key={index} path={media.path} />
                         )
@@ -141,7 +178,7 @@ function CreatePostScreen(): JSX.Element {
                 <BottomSheetView>
                     <BottomOption title="Thêm hình ảnh/ video"
                         onTap={async () => {
-                            const dataPicked = await pickImages({mediaType:'any'});
+                            const dataPicked = await pickImages({ mediaType: 'any' });
                             console.log(dataPicked);
                             setMediaDatas([...mediaDatas, ...dataPicked]);
                         }}

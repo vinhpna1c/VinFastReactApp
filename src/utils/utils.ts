@@ -48,9 +48,9 @@ export async function getUrlFromFileId(fileID: string): Promise<string> {
 
 }
 export const uriToBlob = async (uri: string): Promise<Blob> => {
-  console.log(uri)
   
   const response = await fetch(uri.replace("file:///","file:/"));
+  console.log("Respond blob: "+JSON.stringify(response))
   const blob = await response.blob();
 
   return blob;

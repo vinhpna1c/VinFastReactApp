@@ -1,4 +1,4 @@
-import { getUser } from "@amityco/ts-sdk";
+import { UserRepository } from "@amityco/ts-sdk";
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { getTimeDiffString } from "../../../../utils/utils";
@@ -46,8 +46,8 @@ function CommentComponent(props: CommentProps): JSX.Element {
     const [commentUser, setCommentUser] = useState<Amity.User | undefined>(undefined);
     useEffect(() => {
         const userID = comment.userId;
-        getUser(userID).then((user) => {
-            setCommentUser(user.data);
+       UserRepository.getUserByIds([userID]).then((users) => {
+            setCommentUser(users.data[0]);
         })
     }, [])
     //handle for text data
