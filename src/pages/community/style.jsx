@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
   },
   image_banner: {
     height: 185,
-    width: "90%",
     borderRadius: 16,
   },
   myCommunity: {},

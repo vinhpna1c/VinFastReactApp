@@ -29,7 +29,11 @@ const sendTestImage=async()=>{
     const file=new File([blob],"FB_IMG_1675552673416.jpg",{type:blob.type});
     data.append("files",file);
     console.info("Data: "+JSON.stringify(data));
+    const client=Client.getActiveClient();
+    
     try{
+        console.log(client.http.defaults)
+        
         FileRepository.createImage(data).then((response)=>{
             console.info("Respond: "+JSON.stringify(response))
         })
@@ -155,7 +159,7 @@ function CreatePostScreen(): JSX.Element {
                     }
                     )}
                     {mediaDatas.filter((media) => media.mime.indexOf("video") >= 0).map((media, index) => {
-                        c
+                        
                         return (
                             <MiniVideoPicked key={index} path={media.path} />
                         )

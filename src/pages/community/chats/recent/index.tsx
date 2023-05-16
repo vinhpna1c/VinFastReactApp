@@ -22,7 +22,6 @@ function RecentTab(): JSX.Element {
             channels?.forEach((c)=>{
                 if (!subscribedChannels.includes(c.channelId) && !c.isDeleted) {
                     subscribedChannels.push(c.channelId);
-              
                     chatDisposers.push(subscribeTopic(getChannelTopic(c)));
                   }
             })

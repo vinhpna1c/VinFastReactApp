@@ -7,15 +7,6 @@ class AmityChannelStore {
             channels: observable
         })
     }
-
-    // addReel=(newReel:Reel)=>{
-    //     if(this.reels.findIndex((r)=>r.id==newReel.id)<0)
-    //     {
-    //         console.log(newReel.metaData)
-    //         this.reels.push(newReel);
-            
-    //     }
-    // }
 }
 
 

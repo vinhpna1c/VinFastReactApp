@@ -44,7 +44,7 @@ class AmityPostController {
 
   }
 
-  getUserByID = async (userId: string): Promise<Amity.User> => {
+ static getUserByID = async (userId: string): Promise<Amity.User> => {
     return ((await  UserRepository.getUserByIds([userId]))?.data[0]);
   }
 
@@ -106,6 +106,7 @@ class AmityPostController {
     if (imageBlobs == undefined) {
       return [];
     }
+    
     console.info("Image Blobs: " + JSON.stringify(imageBlobs));
     const query= createQuery(FileRepository.createImage,imageBlobs);
     runQuery(query,(respond)=>{

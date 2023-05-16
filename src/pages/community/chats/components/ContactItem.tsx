@@ -14,7 +14,6 @@ function ContactItem(props: ContactItemProps): JSX.Element {
             // source={require('../../../../../assets/images/user.jpg')}
             title={props.displayName!=undefined?props.displayName[0]:"0"}
             containerStyle={{backgroundColor:'grey',justifyContent:'center',}}
-            
             titleStyle={{color:'white'}}
              />
             <Text style={styles.nameText}>{props.displayName??"Display name"}</Text>

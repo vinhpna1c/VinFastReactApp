@@ -2,31 +2,42 @@ import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import styles from "../style";
 import { Avatar, Image } from "@rneui/themed";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AmityPostController from "../../../../controller/amity/amity_post_controller";
 
 import { getTimeDiffString } from "../../../../utils/utils";
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import { FileRepository } from "@amityco/ts-sdk";
+import { getUserByIds } from "@amityco/ts-sdk/dist/userRepository";
+
 type PostContentProps = {
   post: Amity.Post,
-  showBackBtn?:boolean,
+  showBackBtn?: boolean,
 
 };
 function PostContent(props: PostContentProps): JSX.Element {
   const { post } = props;
-  const showBackBtn=props.showBackBtn??false;
+  const showBackBtn = props.showBackBtn ?? false;
 
   const [images, setImages] = useState<string[]>([]);
 
   const [showImage, setShowImage] = useState(false);
+  const [postedUser, setPostedUser] = useState<Amity.User | undefined>(undefined);
 
   const toggleDisplay = () => {
     setShowImage((prev) => !prev);
   };
-  
+
+  const fetchUserData = useCallback(async () => {
+    const userId = post.postedUserId;
+    const postUser = await AmityPostController.getUserByID(userId);
+    setPostedUser(postUser);
+
+  }, [post])
+
   useEffect(() => {
+    fetchUserData();
     const subPosts = post["children"] ?? [];
     const getImageLinks = async () => {
       var links = [];
@@ -54,55 +65,65 @@ function PostContent(props: PostContentProps): JSX.Element {
   }, []);
 
   const timeDiff = getTimeDiffString(post["createdAt"] ?? "");
-  const {width}=Dimensions.get('screen');
-  const navigation=useNavigation();
+  const { width } = Dimensions.get('screen');
+  const navigation = useNavigation();
   console.log(width);
   return (
     <>
-    <View>
-      {showBackBtn&& <IonIcon name="chevron-back" size={24} color='black' onPress={()=>navigation.goBack()} style={{marginBottom:8}}/>}
-      <View style={styles.header}>
+      <View>
+        {showBackBtn && <IonIcon name="chevron-back" size={24} color='black' onPress={() => navigation.goBack()} style={{ marginBottom: 8 }} />}
+        <View style={styles.header}>
 
-        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
-          
-          <Avatar
-            size={48}
-            rounded
-            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-          />
-          <View style={styles.headerText}>
-            <Text style={styles.username}>{post.postedUserId}</Text>
-            <Text style={styles.timestamp}>{timeDiff}</Text>
+          <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+
+            {
+              (postedUser!==undefined &&postedUser.avatarCustomUrl!=undefined)?
+              <Avatar rounded size={40}
+              icon={{ name: 'user', type: 'font-awesome' }}
+              source={{ uri: postedUser?.avatarCustomUrl, }}
+              containerStyle={{ backgroundColor: 'grey', justifyContent: 'center', }}
+              title={postedUser?.displayName != undefined ? postedUser?.displayName[0] : "0"}
+              titleStyle={{ color: 'white' }}
+
+            />
+            : <Avatar rounded size={40}
+            source={require('../../../../../assets/images/user_placeholder.png')}
+            />
+
+          }
+            <View style={styles.headerText}>
+              <Text style={styles.username}>{post.postedUserId}</Text>
+              <Text style={styles.timestamp}>{timeDiff}</Text>
+            </View>
+          </View>
+          <View>
+            <TouchableOpacity style={{ marginLeft: 110 }}>
+              <MaterialIcons name="more-horiz" size={20}></MaterialIcons>
+            </TouchableOpacity>
           </View>
         </View>
-        <View>
-          <TouchableOpacity style={{ marginLeft: 110 }}>
-            <MaterialIcons name="more-horiz" size={20}></MaterialIcons>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <Text style={styles.content}>
-        {(post.data as Amity.ContentDataText).text}
-      </Text>
-      <View style={styles.mediaContainer}>
-        {images.map((image, index) => /* console.log(image);*/ {
+        <Text style={styles.content}>
+          {(post.data as Amity.ContentDataText).text}
+        </Text>
+        <View style={styles.mediaContainer}>
+          {images.map((image, index) => /* console.log(image);*/ {
             console.debug(image)
-          return (
-            <Image
-              key={image}
-              source={ {uri: image }}
-              style={
+            return (
+              <Image
+                key={image}
+                source={{ uri: image }}
+                style={
 
-                [
+                  [
                     index === 0 ? styles.topImageContent : styles.otherImageContent,
-                {
-                    width: index === 0?width-32:(width-40)/(images.length-1)
-                }]
-              }
-            />
-          );
-        })}
-      </View>
+                    {
+                      width: index === 0 ? width - 32 : (width - 40) / (images.length - 1)
+                    }]
+                }
+              />
+            );
+          })}
+        </View>
       </View>
     </>
   );
