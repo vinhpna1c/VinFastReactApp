@@ -189,6 +189,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  categoryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    margin: 16,
+  },
+  categoryItem: {
+    borderRadius: 10,
+    height: 100,
+    overflow: "hidden",
+    borderRadius: 16,
+    marginBottom:4,
+  },
 });
 
 export default styles;

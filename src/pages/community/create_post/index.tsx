@@ -17,16 +17,13 @@ import DropDownPicker from "react-native-dropdown-picker";
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { uriToBlob } from "../../../utils/utils";
 
-const sendTestImage=async()=>{
-    const filePath="file:///data/user/0/com.innovation.vinfast.demo/cache/react-native-image-crop-picker/IMG_20230127_170553.jpg";
-    console.log("file path "+filePath)
+const sendTestImage=async(filePath:string)=>{
+    const fileName=filePath.split('/').reverse()[0];
     const blob=await uriToBlob(filePath);
-    console.info("Blob name: "+blob.name);
-    const data=new FormData();
-
-    console.info("Set up here");
     
-    const file=new File([blob],"FB_IMG_1675552673416.jpg",{type:blob.type});
+    const data=new FormData();
+    
+    const file=new File([blob],fileName,{type:blob.type});
     data.append("files",file);
     console.info("Data: "+JSON.stringify(data));
     const client=Client.getActiveClient();
@@ -43,12 +40,6 @@ const sendTestImage=async()=>{
             console.info("Error create image")
             console.error(e);
     }
-  
-    // const query=createQuery(FileRepository.createImage,data,);
-    // runQuery(query,(response)=>{
-    //     console.info("Respond: "+JSON.stringify(response))
-     
-    // })
 }
 
 const AVATAR_SIZE = 24;
@@ -120,7 +111,8 @@ function CreatePostScreen(): JSX.Element {
             </View>
             <Button title={"Send test image"} onPress={async()=>{
                 console.info("CALL TEST FUNCTION")
-                await sendTestImage()
+                const filePath="file:///data/user/0/com.innovation.vinfast.demo/cache/react-native-image-crop-picker/IMG_20230127_170553.jpg";
+                await sendTestImage(filePath)
                 console.info("Done calll test function")
                 }}/>
             <View>
